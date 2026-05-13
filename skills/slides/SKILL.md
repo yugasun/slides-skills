@@ -70,7 +70,7 @@ Once the user picks:
 3. Add/remove/split slides to match the user's content outline
 4. **If a layout is missing**, design it using the template's fonts, color palette, decorative vocabulary, and spacing rhythm — see [AGENTS.md](./beautiful-html-templates/AGENTS.md) §5
 5. Ensure the navigation (keyboard/click) works correctly
-6. Save the final deck as `slides/<ppt-name>/dist/index.html`
+6. Save the final deck as `slides/<ppt-name>/index.html`
 
 ### Step 5 — Open and Deliver
 
@@ -103,7 +103,7 @@ Use this when the user wants a specific theme or a self-contained minimal output
 4. **Inject JS**: Replace `/* JS_INJECTION_POINT */` with `scripts.js`, then replace `[TOTAL_SLIDES_COUNT]` with the actual number
 5. **Generate Slides**: Create HTML using patterns from `layouts.md`
 6. **Inject Slides**: Replace `<!-- SLIDES_INJECTION_POINT -->`
-7. **Save**: `slides/<ppt-name>/dist/index.html`
+7. **Save**: `slides/<ppt-name>/index.html`
 
 ---
 
