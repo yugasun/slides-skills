@@ -6,7 +6,7 @@ Generate high-quality HTML slide presentations with beautiful templates.
 
 ## Live Demo
 
-👉 **[Open Demo](demo/index.html)** — 10-slide showcase of the Studio template (dark canvas + electric yellow), demonstrating the skill's capabilities. Use arrow keys or swipe to navigate.
+👉 **[Open Demo](https://yugasun.github.io/slides-skills/)** — 10-slide showcase of the 8-bit-orbit template, demonstrating the skill's capabilities. Use arrow keys or swipe to navigate.
 
 ## Install
 
