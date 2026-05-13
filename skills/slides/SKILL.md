@@ -5,9 +5,31 @@ license: MIT
 author: yugasun
 homepage: https://github.com/yugasun/slides-skills
 version: 1.0.0
+config:
+  outputRoot: "~/slides"   # default output directory; override via --slides-root or user request
+  previewOpen: true         # auto-open preview in browser after generation
 ---
 
 # Interactive HTML Slide Generator
+
+## Output Directory
+
+Generated decks are saved under `~/slides/<deck-name>/` by default. Before generating, the skill:
+
+1. Expands `~` to the user's home directory
+2. Creates the output directory if it doesn't exist (`mkdir -p`)
+3. Creates `slides/<deck-name>/previews/` for Workflow A preview files
+4. Creates `slides/<deck-name>/` for the final deck
+
+**Custom root directory**: If the user specifies a path (e.g., "save it to `~/my-decks`" or "output to `/tmp/slides`"), use that instead of the default. Respect the user's intent — don't override a explicitly requested path.
+
+**Directory initialization example**:
+```bash
+mkdir -p ~/slides/my-deck/previews
+mkdir -p ~/slides/my-deck/previews
+```
+
+---
 
 ## Two Workflows
 
@@ -45,17 +67,18 @@ For each of the 3 candidates:
 1. Read `skills/ppt/beautiful-html-templates/templates/<slug>/template.html`
 2. Extract **the first slide only** (the cover/title slide)
 3. Replace placeholder content with **the user's actual topic/title/subtitle/author/date**
-4. Save as `slides/<ppt-name>/previews/01-<slug>.html`
+4. Save as `~/slides/<deck-name>/previews/01-<slug>.html`
+5. Initialize `~/slides/<deck-name>/` for later use
 
 Open each preview with `open <path>` (macOS) and send the user a message:
 
 > "Three options to compare:
 > 1. **<Template A>** — <one-line tone description>
->    `/path/to/previews/01-template-a.html`
+>    `~/slides/<deck-name>/previews/01-template-a.html`
 > 2. **<Template B>** — <one-line tone description>
->    `/path/to/previews/02-template-b.html`
+>    `~/slides/<deck-name>/previews/02-template-b.html`
 > 3. **<Template C>** — <one-line tone description>
->    `/path/to/previews/03-template-c.html`
+>    `~/slides/<deck-name>/previews/03-template-c.html`
 >
 > Which one feels right?"
 
@@ -70,13 +93,13 @@ Once the user picks:
 3. Add/remove/split slides to match the user's content outline
 4. **If a layout is missing**, design it using the template's fonts, color palette, decorative vocabulary, and spacing rhythm — see [AGENTS.md](./beautiful-html-templates/AGENTS.md) §5
 5. Ensure the navigation (keyboard/click) works correctly
-6. Save the final deck as `slides/<ppt-name>/index.html`
+6. Save the final deck as `~/slides/<deck-name>/index.html`
 
 ### Step 5 — Open and Deliver
 
 Open the final deck with `open <path>`. Send:
 
-> "Done. Your deck is at `/path/to/deck/index.html` — opened in your browser."
+> "Done. Your deck is at `~/slides/<deck-name>/index.html` — opened in your browser."
 
 ---
 
@@ -103,7 +126,7 @@ Use this when the user wants a specific theme or a self-contained minimal output
 4. **Inject JS**: Replace `/* JS_INJECTION_POINT */` with `scripts.js`, then replace `[TOTAL_SLIDES_COUNT]` with the actual number
 5. **Generate Slides**: Create HTML using patterns from `layouts.md`
 6. **Inject Slides**: Replace `<!-- SLIDES_INJECTION_POINT -->`
-7. **Save**: `slides/<ppt-name>/index.html`
+7. **Save**: `~/slides/<deck-name>/index.html`
 
 ---
 

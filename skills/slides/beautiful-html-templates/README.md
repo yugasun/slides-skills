@@ -1,5 +1,7 @@
 # beautiful-html-templates
 
+Fork from [beautiful-html-templates](https://github.com/zarazhangrui/beautiful-html-templates).
+
 A library of reusable HTML slide templates designed so that any coding agent can pick the right one and produce a beautiful deck on the user's behalf, automatically.
 
 Agents using the library should read [`AGENTS.md`](./AGENTS.md). It's the operating manual: how to read `index.json`, match the user's brief to a template, clone it, and adapt the content.
