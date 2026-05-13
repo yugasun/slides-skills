@@ -10,6 +10,16 @@
 
 ## 安装
 
+### 通过自然语言（最简单）
+
+直接告诉 Claude Code/Codex 你想做什么：
+
+```
+帮我安装 slides skill https://github.com/yugasun/slides-skills
+```
+
+### 通过 CLI
+
 ```bash
 npx skills add yugasun/slides-skills
 ```

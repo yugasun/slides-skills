@@ -10,6 +10,16 @@ Generate high-quality HTML slide presentations with beautiful templates.
 
 ## Install
 
+### Via natural language (easiest)
+
+Just tell Claude Code/Codex what you want:
+
+```
+Install the slides skill https://github.com/yugasun/slides-skills
+```
+
+### Via CLI
+
 ```bash
 npx skills add yugasun/slides-skills
 ```

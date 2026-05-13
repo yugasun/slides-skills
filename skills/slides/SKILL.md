@@ -1,25 +1,10 @@
 ---
 name: slides
 description: Generate high-quality HTML slide presentations with beautiful templates. Make sure to use this skill whenever the user mentions slides, presentation, PPT, deck, keynote, 演示文稿, or 幻灯片 — even if they don't explicitly ask for HTML or templates. This skill handles both polished multi-template workflows and fast self-contained themes. Use it for any request involving creating, building, or generating a presentation regardless of how the request is phrased.
-metadata:
-  tags:
-    - presentation
-    - html
-    - slides
-    - deck
-    - ppt
-    - template
-  triggers:
-    - slides
-    - presentation
-    - ppt
-    - deck
-    - keynote
-    - 演示文稿
-    - 幻灯片
-    - make a presentation
-    - create slides
-    - generate deck
+license: MIT
+author: yugasun
+homepage: https://github.com/yugasun/slides-skills
+version: 1.0.0
 ---
 
 # Interactive HTML Slide Generator
