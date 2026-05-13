@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SLIDES SKILL — Creative Mode Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #EFE9D9;
+      --cream-2: #E4DCC4;
+      --green: #1F8A4C;
+      --pink: #F06CA8;
+      --orange: #E85A1F;
+      --yellow: #F5C518;
+      --ink: #0F0F0F;
+      --ink-2: #2A2A2A;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
+    body { font-family: "Space Grotesk", system-ui, sans-serif; color: var(--ink); }
+
+    .deck { width: 100%; height: 100vh; overflow: hidden; position: relative; }
+    .slides-container { width: 100%; height: 100%; transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
+
+    .slide { width: 100%; height: 100vh; position: relative; overflow: hidden; display: flex; flex-direction: column; }
+
+    /* Topbar */
+    .topbar { position: absolute; left: 64px; right: 64px; top: 48px; display: flex; justify-content: space-between; align-items: center; font-family: "JetBrains Mono", monospace; font-size: 18px; letter-spacing: .08em; text-transform: uppercase; z-index: 10; }
+    .topbar .pill { border: 2px solid var(--ink); padding: 5px 14px; border-radius: 999px; }
+    .topbar.dark-text { color: var(--ink); }
+    .topbar.light-text { color: var(--cream); }
+    .topbar.light-text .pill { border-color: var(--cream); }
+
+    /* Slide meta footer */
+    .slide-meta { position: absolute; left: 64px; right: 64px; bottom: 40px; display: flex; justify-content: space-between; align-items: center; font-family: "JetBrains Mono", monospace; font-size: 18px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink); z-index: 10; }
+    .slide-meta.light-text { color: var(--cream); }
+    .slide-meta .dot { width: 10px; height: 10px; background: var(--ink); border-radius: 50%; display: inline-block; margin: 0 14px; transform: translateY(-2px); }
+    .slide-meta.light-text .dot { background: var(--cream); }
+
+    /* Display typography */
+    .display { font-family: "Archivo Black", sans-serif; letter-spacing: -.01em; line-height: .92; text-transform: uppercase; }
+    .mono { font-family: "JetBrains Mono", monospace; }
+    .body-text { font-family: "Space Grotesk", sans-serif; }
+
+    /* Nav */
+    .nav-dots { position: fixed; right: 32px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 14px; z-index: 100; }
+    .nav-dot { width: 10px; height: 10px; border: 2px solid var(--ink); background: transparent; cursor: pointer; transition: all 0.3s; position: relative; }
+    .nav-dot::after { content: ""; position: absolute; inset: 2px; background: var(--ink); opacity: 0; transition: opacity 0.3s; }
+    .nav-dot.active::after { opacity: 1; }
+    .nav-dot:hover { border-color: var(--pink); }
+    .slide-counter { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); font-family: "JetBrains Mono", monospace; font-size: 0.8rem; color: var(--ink); background: rgba(239,233,217,0.9); padding: 8px 20px; z-index: 100; letter-spacing: .12em; }
+
+    /* ===== SLIDE 1: TITLE / POSTER ===== */
+    .s1 { background: var(--cream); }
+    .s1 .title { position: absolute; left: 80px; top: 50%; transform: translateY(-50%); font-size: clamp(4rem, 8vw, 9rem); color: var(--ink); width: 60%; }
+    .s1 .title .row { display: block; }
+    .s1 .title .row:nth-child(2) { color: var(--orange); }
+    .s1 .poster-area { position: absolute; right: 80px; top: 50%; transform: translateY(-50%); width: 35%; aspect-ratio: 1; max-width: 380px; }
+    .s1 .switch-box { position: relative; width: 100%; height: 100%; background: var(--green); border: 4px solid var(--ink); display: flex; align-items: center; justify-content: center; box-shadow: 20px 20px 0 var(--orange), 20px 20px 0 4px var(--ink); }
+    .s1 .switch-inner { position: relative; width: 55%; height: 55%; background: var(--pink); border: 4px solid var(--ink); }
+    .s1 .switch-lever { position: absolute; top: 15%; left: 15%; width: 70%; height: 50%; background: #FBD0E3; border: 4px solid var(--ink); transform: skewY(-6deg); }
+    .s1 .switch-lever::after { content: ""; position: absolute; left: 0; right: 0; bottom: -24px; height: 24px; background: var(--pink); border: 4px solid var(--ink); border-top: 0; }
+    .s1 .tagline { position: absolute; left: 80px; top: 80px; font-family: "JetBrains Mono", monospace; font-size: 18px; letter-spacing: .16em; text-transform: uppercase; color: var(--ink); }
+    .s1 .tagline span { display: inline-block; width: 50px; height: 3px; background: var(--ink); vertical-align: middle; margin-right: 14px; transform: translateY(-2px); }
+    .s1 .footnote { position: absolute; left: 80px; bottom: 120px; font-family: "Space Grotesk", sans-serif; font-size: 18px; color: var(--ink-2); max-width: 500px; line-height: 1.5; }
+
+    /* ===== SLIDE 2: WHAT IS ===== */
+    .s2 { background: var(--cream); }
+    .s2 .kicker { position: absolute; left: 80px; top: 120px; font-family: "JetBrains Mono", monospace; font-size: 20px; letter-spacing: .14em; text-transform: uppercase; background: var(--ink); color: var(--cream); padding: 8px 16px; display: inline-block; white-space: nowrap; }
+    .s2 .heading { position: absolute; left: 80px; top: 220px; right: 500px; font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1; color: var(--ink); }
+    .s2 .body-col { position: absolute; left: 80px; top: 480px; right: 80px; font-size: 22px; line-height: 1.6; color: var(--ink-2); max-width: 900px; }
+    .s2 .body-col p + p { margin-top: 16px; }
+
+    /* ===== SLIDE 3: STATS ===== */
+    .s3 { background: var(--cream-2); }
+    .s3 .kicker { position: absolute; left: 80px; top: 100px; font-family: "JetBrains Mono", monospace; font-size: 20px; letter-spacing: .14em; text-transform: uppercase; background: var(--ink); color: var(--cream); padding: 8px 16px; display: inline-block; }
+    .s3 .heading { position: absolute; left: 80px; top: 200px; font-size: clamp(2rem, 4vw, 4rem); color: var(--ink); }
+    .s3 .grid { position: absolute; left: 80px; right: 80px; top: 340px; bottom: 100px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+    .s3 .cell { border: 4px solid var(--ink); padding: 24px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+    .s3 .cell .num { font-family: "Archivo Black", sans-serif; font-size: clamp(2.5rem, 4vw, 4rem); line-height: 1; }
+    .s3 .cell .lbl { font-family: "JetBrains Mono", monospace; font-size: 14px; letter-spacing: .12em; text-transform: uppercase; margin-top: 8px; }
+    .s3 .c1 { background: var(--green); color: var(--cream); }
+    .s3 .c2 { background: var(--pink); color: var(--ink); }
+    .s3 .c3 { background: var(--yellow); color: var(--ink); }
+    .s3 .c4 { background: var(--orange); color: var(--cream); }
+
+    /* ===== SLIDE 4: TWO WORKFLOWS ===== */
+    .s4 { background: var(--cream); }
+    .s4 .kicker { position: absolute; left: 80px; top: 100px; font-family: "JetBrains Mono", monospace; font-size: 20px; letter-spacing: .14em; text-transform: uppercase; background: var(--ink); color: var(--cream); padding: 8px 16px; }
+    .s4 .heading { position: absolute; left: 80px; top: 200px; font-size: clamp(2rem, 4vw, 4rem); color: var(--ink); }
+    .s4 .grid { position: absolute; left: 80px; right: 80px; top: 320px; bottom: 80px; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+    .s4 .card { border: 4px solid var(--ink); padding: 32px; position: relative; }
+    .s4 .card .card-head { font-family: "Archivo Black", sans-serif; font-size: 28px; margin-bottom: 4px; }
+    .s4 .card .card-sub { font-family: "JetBrains Mono", monospace; font-size: 14px; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 16px; }
+    .s4 .card p { font-size: 18px; line-height: 1.5; color: var(--ink-2); margin-bottom: 12px; }
+    .s4 .card ul { list-style: none; }
+    .s4 .card ul li { font-size: 16px; line-height: 1.5; padding: 4px 0; padding-left: 16px; position: relative; color: var(--ink-2); }
+    .s4 .card ul li::before { content: ">"; position: absolute; left: 0; font-family: "JetBrains Mono"; color: var(--ink); font-weight: 700; }
+    .s4 .card-a { background: var(--green); color: var(--cream); }
+    .s4 .card-a .card-sub { color: var(--yellow); }
+    .s4 .card-a p, .s4 .card-a ul li { color: var(--cream); }
+    .s4 .card-a ul li::before { color: var(--cream); }
+    .s4 .card-b { background: var(--cream); color: var(--ink); }
+
+    /* ===== SLIDE 5: 32 TEMPLATES ===== */
+    .s5 { background: var(--cream); }
+    .s5 .kicker { position: absolute; left: 80px; top: 100px; font-family: "JetBrains Mono", monospace; font-size: 20px; letter-spacing: .14em; text-transform: uppercase; background: var(--pink); color: var(--ink); padding: 8px 16px; }
+    .s5 .heading { position: absolute; left: 80px; top: 200px; font-size: clamp(2rem, 4vw, 4rem); color: var(--ink); }
+    .s5 .sub { position: absolute; left: 80px; top: 300px; right: 80px; font-size: 18px; color: var(--ink-2); max-width: 700px; line-height: 1.5; }
+    .s5 .gallery { position: absolute; left: 80px; right: 80px; top: 380px; bottom: 80px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .s5 .thumb { aspect-ratio: 16/9; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; font-weight: 700; position: relative; overflow: hidden; border: 3px solid var(--ink); }
+    .s5 .thumb span { position: relative; z-index: 2; text-align: center; line-height: 1.3; }
+    .s5 .t-studio { background: #1c1c1c; color: #f5d200; }
+    .s5 .t-broadside { background: #0a0a0a; color: #ff6b35; }
+    .s5 .t-signal { background: #0d1929; color: #c4a35a; }
+    .s5 .t-cobalt { background: #0a1628; color: #5edcf4; }
+    .s5 .t-capsule { background: #f0f0f0; color: #ff6b9d; }
+    .s5 .t-bluepro { background: #e8eef5; color: #2563a8; }
+    .s5 .t-blockframe { background: #1a1a2e; color: #a855f7; }
+    .s5 .t-playful { background: #fff8e7; color: #f97316; }
+
+    /* ===== SLIDE 6: 4 THEMES ===== */
+    .s6 { background: var(--cream-2); }
+    .s6 .kicker { position: absolute; left: 80px; top: 100px; font-family: "JetBrains Mono", monospace; font-size: 20px; letter-spacing: .14em; text-transform: uppercase; background: var(--ink); color: var(--cream); padding: 8px 16px; }
+    .s6 .heading { position: absolute; left: 80px; top: 200px; font-size: clamp(2rem, 4vw, 4rem); color: var(--ink); }
+    .s6 .sub { position: absolute; left: 80px; top: 300px; right: 80px; font-size: 18px; color: var(--ink-2); max-width: 700px; line-height: 1.5; }
+    .s6 .swatches { position: absolute; left: 80px; right: 80px; top: 400px; bottom: 100px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .s6 .swatch { display: flex; flex-direction: column; gap: 8px; }
+    .s6 .swatch-prev { aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; font-weight: 700; border: 3px solid var(--ink); }
+    .s6 .swatch-name { font-family: "JetBrains Mono", monospace; font-size: 12px; color: var(--ink-2); text-align: center; letter-spacing: .04em; }
+    .s6 .sw-cyberpunk { background: linear-gradient(135deg, #0a0a1a 50%, #00f5ff 50%); color: #00f5ff; }
+    .s6 .sw-corporate { background: linear-gradient(135deg, #e8eef5 50%, #2563a8 50%); color: #2563a8; }
+    .s6 .sw-minimal { background: linear-gradient(135deg, #ffffff 50%, #000000 50%); color: #000; }
+    .s6 .sw-nature { background: linear-gradient(135deg, #f5f0e8 50%, #2d5a27 50%); color: #2d5a27; }
+
+    /* ===== SLIDE 7: WHICH WORKFLOW ===== */
+    .s7 { background: var(--cream); }
+    .s7 .kicker { position: absolute; left: 80px; top: 100px; font-family: "JetBrains Mono", monospace; font-size: 20px; letter-spacing: .14em; text-transform: uppercase; background: var(--yellow); color: var(--ink); padding: 8px 16px; }
+    .s7 .heading { position: absolute; left: 80px; top: 200px; font-size: clamp(2rem, 4vw, 4rem); color: var(--ink); }
+    .s7 .compare { position: absolute; left: 80px; right: 80px; top: 320px; bottom: 80px; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+    .s7 .cmp { padding: 28px; border: 4px solid var(--ink); }
+    .s7 .cmp .cmp-head { font-family: "JetBrains Mono", monospace; font-size: 14px; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 12px; }
+    .s7 .cmp-a .cmp-head { color: var(--green); }
+    .s7 .cmp-b .cmp-head { color: var(--pink); }
+    .s7 .cmp p { font-size: 17px; line-height: 1.5; color: var(--ink-2); }
+    .s7 .cmp .verdict { margin-top: 12px; font-family: "JetBrains Mono", monospace; font-size: 13px; letter-spacing: .06em; }
+    .s7 .cmp-a .verdict { color: var(--green); }
+    .s7 .cmp-b .verdict { color: var(--pink); }
+
+    /* ===== SLIDE 8: HOW IT WORKS ===== */
+    .s8 { background: var(--cream); }
+    .s8 .kicker { position: absolute; left: 80px; top: 80px; font-family: "JetBrains Mono", monospace; font-size: 20px; letter-spacing: .14em; text-transform: uppercase; background: var(--ink); color: var(--cream); padding: 8px 16px; }
+    .s8 .heading { position: absolute; left: 80px; top: 180px; font-size: clamp(2rem, 4vw, 4rem); color: var(--ink); }
+    .s8 .steps { position: absolute; left: 80px; right: 80px; top: 300px; bottom: 80px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .s8 .step { border: 4px solid var(--ink); padding: 20px; position: relative; display: flex; flex-direction: column; }
+    .s8 .step .n { font-family: "Archivo Black", sans-serif; font-size: clamp(3rem, 5vw, 5rem); line-height: 1; }
+    .s8 .step .t { font-family: "Archivo Black", sans-serif; font-size: 20px; margin-top: 8px; text-transform: uppercase; }
+    .s8 .step .d { font-size: 14px; line-height: 1.4; color: var(--ink-2); margin-top: 8px; }
+    .s8 .step .arrow { position: absolute; right: -18px; top: 50%; transform: translateY(-50%); width: 0; height: 0; border-top: 14px solid transparent; border-bottom: 14px solid transparent; border-left: 16px solid var(--ink); z-index: 2; }
+    .s8 .step:last-child .arrow { display: none; }
+    .s8 .sa { background: var(--cream); }
+    .s8 .sb { background: var(--pink); }
+    .s8 .sc { background: var(--yellow); }
+    .s8 .sd { background: var(--green); color: var(--cream); }
+    .s8 .sd .d { color: var(--cream); }
+
+    /* ===== SLIDE 9: FEATURES ===== */
+    .s9 { background: var(--ink); color: var(--cream); }
+    .s9 .topbar.dark-text { color: var(--cream); }
+    .s9 .topbar.dark-text .pill { border-color: var(--cream); }
+    .s9 .slide-meta.light-text { color: var(--cream); }
+    .s9 .slide-meta.light-text .dot { background: var(--cream); }
+    .s9 .kicker { position: absolute; left: 80px; top: 100px; font-family: "JetBrains Mono", monospace; font-size: 20px; letter-spacing: .14em; text-transform: uppercase; background: var(--yellow); color: var(--ink); padding: 8px 16px; }
+    .s9 .heading { position: absolute; left: 80px; top: 200px; font-size: clamp(2rem, 4vw, 4rem); color: var(--cream); }
+    .s9 .feat-grid { position: absolute; left: 80px; right: 80px; top: 320px; bottom: 80px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px 40px; }
+    .s9 .feat { display: flex; align-items: flex-start; gap: 14px; }
+    .s9 .feat .icon { width: 32px; height: 32px; background: var(--yellow); border: 3px solid var(--cream); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-family: "Archivo Black"; font-size: 16px; color: var(--ink); }
+    .s9 .feat .icon.pk { background: var(--pink); }
+    .s9 .feat .icon.og { background: var(--orange); }
+    .s9 .feat .txt { font-size: 17px; line-height: 1.4; color: var(--cream); }
+
+    /* ===== SLIDE 10: OUTPUT DIR ===== */
+    .s10 { background: var(--cream); }
+    .s10 .kicker { position: absolute; left: 80px; top: 100px; font-family: "JetBrains Mono", monospace; font-size: 20px; letter-spacing: .14em; text-transform: uppercase; background: var(--cyan, #5edcf4); color: var(--ink); padding: 8px 16px; }
+    .s10 .heading { position: absolute; left: 80px; top: 200px; font-size: clamp(2rem, 4vw, 4rem); color: var(--ink); }
+    .s10 .code-block { position: absolute; left: 80px; top: 320px; background: var(--ink); padding: 20px 24px; max-width: 500px; width: 100%; }
+    .s10 .code-block .code-label { font-family: "JetBrains Mono", monospace; font-size: 12px; letter-spacing: .1em; color: var(--yellow); margin-bottom: 8px; text-transform: uppercase; }
+    .s10 .code-block code { font-family: "JetBrains Mono", monospace; font-size: 16px; color: var(--cyan, #5edcf4); letter-spacing: .03em; }
+    .s10 .desc { position: absolute; left: 80px; top: 440px; font-size: 17px; line-height: 1.5; color: var(--ink-2); max-width: 500px; }
+
+    /* ===== SLIDE 11: TRY IT ===== */
+    .s11 { background: var(--cream); }
+    .s11 .kicker { position: absolute; left: 80px; top: 100px; font-family: "JetBrains Mono", monospace; font-size: 20px; letter-spacing: .14em; text-transform: uppercase; background: var(--ink); color: var(--cream); padding: 8px 16px; }
+    .s11 .heading { position: absolute; left: 80px; top: 200px; font-size: clamp(2rem, 4vw, 4rem); color: var(--ink); }
+    .s11 .examples { position: absolute; left: 80px; right: 80px; top: 320px; bottom: 80px; display: flex; flex-direction: column; gap: 20px; }
+    .s11 .example { background: var(--ink); padding: 24px 28px; }
+    .s11 .example .ex-label { font-family: "JetBrains Mono", monospace; font-size: 13px; letter-spacing: .1em; margin-bottom: 8px; }
+    .s11 .example:first-child .ex-label { color: var(--yellow); }
+    .s11 .example:last-child .ex-label { color: var(--pink); }
+    .s11 .example p { font-size: 17px; line-height: 1.5; color: rgba(239,233,217,0.8); }
+    .s11 .example strong { color: var(--cream); }
+
+    /* ===== SLIDE 12: INSTALL ===== */
+    .s12 { background: var(--yellow); }
+    .s12 .kicker { position: absolute; left: 80px; top: 100px; font-family: "JetBrains Mono", monospace; font-size: 20px; letter-spacing: .14em; text-transform: uppercase; background: var(--ink); color: var(--cream); padding: 8px 16px; }
+    .s12 .heading { position: absolute; left: 80px; top: 200px; font-size: clamp(2rem, 4vw, 4rem); color: var(--ink); }
+    .s12 .code-block { position: absolute; left: 80px; top: 320px; background: var(--ink); padding: 24px 32px; max-width: 540px; width: 100%; border: 4px solid var(--ink); }
+    .s12 .code-block code { font-family: "JetBrains Mono", monospace; font-size: 18px; color: var(--yellow); letter-spacing: .03em; }
+    .s12 .note { position: absolute; left: 80px; top: 440px; font-size: 17px; color: var(--ink-2); max-width: 500px; line-height: 1.5; }
+
+    /* ===== SLIDE 13: WHAT CAN YOU BUILD ===== */
+    .s13 { background: var(--cream-2); }
+    .s13 .kicker { position: absolute; left: 80px; top: 100px; font-family: "JetBrains Mono", monospace; font-size: 20px; letter-spacing: .14em; text-transform: uppercase; background: var(--orange); color: var(--cream); padding: 8px 16px; }
+    .s13 .heading { position: absolute; left: 80px; top: 200px; font-size: clamp(2rem, 4vw, 4rem); color: var(--ink); }
+    .s13 .gallery { position: absolute; left: 80px; right: 80px; top: 320px; bottom: 80px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .s13 .thumb { aspect-ratio: 16/9; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; font-weight: 700; border: 3px solid var(--ink); }
+    .s13 .thumb span { text-align: center; line-height: 1.3; }
+
+    /* ===== SLIDE 14: CTA ===== */
+    .s14 { background: var(--ink); color: var(--cream); }
+    .s14 .topbar.dark-text { color: var(--cream); }
+    .s14 .topbar.dark-text .pill { border-color: var(--cream); }
+    .s14 .slide-meta.light-text { color: var(--cream); }
+    .s14 .slide-meta.light-text .dot { background: var(--cream); }
+    .s14 .big-cta { position: absolute; left: 80px; top: 180px; right: 600px; }
+    .s14 .big-cta .line1 { font-family: "Archivo Black", sans-serif; font-size: clamp(3rem, 7vw, 8rem); color: var(--cream); line-height: .9; text-transform: uppercase; }
+    .s14 .big-cta .line2 { font-family: "Archivo Black", sans-serif; font-size: clamp(3rem, 7vw, 8rem); color: var(--yellow); line-height: .9; text-transform: uppercase; margin-top: 8px; }
+    .s14 .sub { position: absolute; left: 80px; top: 560px; font-size: 20px; line-height: 1.5; color: rgba(239,233,217,0.6); max-width: 500px; }
+    .s14 .stamp { position: absolute; right: 100px; bottom: 120px; width: 220px; height: 220px; background: var(--pink); border: 4px solid var(--cream); display: flex; align-items: center; justify-content: center; transform: rotate(-6deg); }
+    .s14 .stamp .inner { width: 170px; height: 170px; border: 4px solid var(--cream); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 16px; box-sizing: border-box; }
+    .s14 .stamp .num { font-family: "Archivo Black"; font-size: 44px; line-height: .9; }
+    .s14 .stamp .lbl { font-family: "JetBrains Mono"; font-size: 14px; letter-spacing: .1em; text-transform: uppercase; margin-top: 6px; }
+
+    @media (prefers-reduced-motion: reduce) { .slides-container { transition: none !important; } }
+  </style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+  <div class="nav-dots" id="navDots"></div>
+  <div class="slide-counter" id="slideCounter">01 / 14</div>
+
+  <div class="slides-container" id="slidesContainer">
+
+    <!-- SLIDE 1: HERO -->
+    <section class="slide s1">
+      <div class="topbar dark-text">
+        <div>Agent Skill</div>
+        <div class="pill">Vol. 01 · 2026</div>
+      </div>
+      <div class="tagline"><span></span>Workshop · Slides Skill Demo</div>
+      <h1 class="title display">
+        <span class="row">SLIDES</span>
+        <span class="row">SKILL</span>
+      </h1>
+      <div class="poster-area">
+        <div class="switch-box">
+          <div class="switch-inner">
+            <div class="switch-lever"></div>
+          </div>
+        </div>
+      </div>
+      <div class="footnote body-text">
+        Transform ideas into stunning HTML presentations. 32 beautiful templates. 4 built-in themes. One command away.
+      </div>
+      <div class="slide-meta">
+        <div>Title Card</div>
+        <div>01<span class="dot"></span>14</div>
+      </div>
+    </section>
+
+    <!-- SLIDE 2: WHAT IS -->
+    <section class="slide s2">
+      <div class="topbar dark-text">
+        <div>Overview</div>
+        <div class="pill">Introduction</div>
+      </div>
+      <div class="kicker">What Is</div>
+      <h1 class="heading display">Slides Skill</h1>
+      <div class="body-col">
+        <p>A <strong>Agent Skill</strong> that transforms your ideas into pixel-perfect HTML presentations. No PowerPoint. No Google Slides. Just describe your topic, pick a template, and get a self-contained HTML deck.</p>
+        <p>Works in two modes: <strong>Workflow A</strong> offers 32 hand-crafted templates for polished decks. <strong>Workflow B</strong> delivers instant self-contained output using built-in CSS themes.</p>
+      </div>
+      <div class="slide-meta">
+        <div>Overview</div>
+        <div>02<span class="dot"></span>14</div>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: STATS -->
+    <section class="slide s3">
+      <div class="topbar dark-text">
+        <div>The Numbers</div>
+        <div class="pill">Data</div>
+      </div>
+      <div class="kicker">By the Numbers</div>
+      <h1 class="heading display">The Collection</h1>
+      <div class="grid">
+        <div class="cell c1">
+          <div class="num display">32</div>
+          <div class="lbl mono">Templates</div>
+        </div>
+        <div class="cell c2">
+          <div class="num display">4</div>
+          <div class="lbl mono">CSS Themes</div>
+        </div>
+        <div class="cell c3">
+          <div class="num display">1</div>
+          <div class="lbl mono">HTML File</div>
+        </div>
+        <div class="cell c4">
+          <div class="num display">0</div>
+          <div class="lbl mono">Dependencies</div>
+        </div>
+      </div>
+      <div class="slide-meta">
+        <div>Stats</div>
+        <div>03<span class="dot"></span>14</div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: TWO WORKFLOWS -->
+    <section class="slide s4">
+      <div class="topbar dark-text">
+        <div>Core Systems</div>
+        <div class="pill">Workflows</div>
+      </div>
+      <div class="kicker">Two Workflows</div>
+      <h1 class="heading display">Pick Your Path</h1>
+      <div class="grid">
+        <div class="card card-a">
+          <div class="card-head" style="color: var(--cream);">Workflow A</div>
+          <div class="card-sub">Beautiful Templates</div>
+          <p>32 professionally-designed HTML templates. Best for polished, visually distinctive presentations.</p>
+          <ul>
+            <li>Editorial, retro, brutalist, corporate</li>
+            <li>Animated transitions & reveals</li>
+            <li>Template preview before building</li>
+            <li>Custom fonts & color palettes</li>
+          </ul>
+        </div>
+        <div class="card card-b">
+          <div class="card-head">Workflow B</div>
+          <div class="card-sub" style="color: var(--pink);">Built-in CSS Themes</div>
+          <p>4 self-contained CSS themes. Fast, minimal output for quick focused decks.</p>
+          <ul>
+            <li>Cyberpunk · Corporate · Minimal · Nature</li>
+            <li>Single-file, zero dependencies</li>
+            <li>Instant generation</li>
+            <li>Perfect for tech talks & reports</li>
+          </ul>
+        </div>
+      </div>
+      <div class="slide-meta">
+        <div>Workflows</div>
+        <div>04<span class="dot"></span>14</div>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: 32 TEMPLATES -->
+    <section class="slide s5">
+      <div class="topbar dark-text">
+        <div>Workflow A</div>
+        <div class="pill">Templates</div>
+      </div>
+      <div class="kicker">32 Templates</div>
+      <h1 class="heading display">Beautiful HTML Templates</h1>
+      <p class="sub">Pick based on occasion and mood. The skill shows you 3 candidates with live title-slide previews, then builds the full deck.</p>
+      <div class="gallery">
+        <div class="thumb t-studio"><span>Studio<br>Black+Yellow</span></div>
+        <div class="thumb t-broadside"><span>Broadside<br>Dark Editorial</span></div>
+        <div class="thumb t-signal"><span>Signal<br>Navy+Gold</span></div>
+        <div class="thumb t-cobalt"><span>Cobalt Grid<br>Electric</span></div>
+        <div class="thumb t-capsule"><span>Capsule<br>Modular Pastel</span></div>
+        <div class="thumb t-bluepro"><span>Blue Pro<br>Corporate Clean</span></div>
+        <div class="thumb t-blockframe"><span>BlockFrame<br>Neo-Brutalist</span></div>
+        <div class="thumb t-playful"><span>Playful<br>Sun-Warm Indie</span></div>
+      </div>
+      <div class="slide-meta">
+        <div>Templates</div>
+        <div>05<span class="dot"></span>14</div>
+      </div>
+    </section>
+
+    <!-- SLIDE 6: 4 THEMES -->
+    <section class="slide s6">
+      <div class="topbar dark-text">
+        <div>Workflow B</div>
+        <div class="pill">Themes</div>
+      </div>
+      <div class="kicker">4 Built-in Themes</div>
+      <h1 class="heading display">Self-Contained Output</h1>
+      <p class="sub">Self-contained single-file output. No template selection needed — just pick a theme and go.</p>
+      <div class="swatches">
+        <div class="swatch">
+          <div class="swatch-prev sw-cyberpunk"><span>Cyberpunk</span></div>
+          <div class="swatch-name">Dark · Neon · Futuristic</div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-prev sw-corporate"><span>Corporate</span></div>
+          <div class="swatch-name">Light · Professional · Blue</div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-prev sw-minimal"><span>Minimal</span></div>
+          <div class="swatch-name">Black · White · Swiss</div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-prev sw-nature"><span>Nature</span></div>
+          <div class="swatch-name">Cream · Green · Organic</div>
+        </div>
+      </div>
+      <div class="slide-meta">
+        <div>Themes</div>
+        <div>06<span class="dot"></span>14</div>
+      </div>
+    </section>
+
+    <!-- SLIDE 7: WHICH WORKFLOW -->
+    <section class="slide s7">
+      <div class="topbar dark-text">
+        <div>Decision Guide</div>
+        <div class="pill">Compare</div>
+      </div>
+      <div class="kicker">Which Workflow</div>
+      <h1 class="heading display">Choose Your Approach</h1>
+      <div class="compare">
+        <div class="cmp cmp-a">
+          <div class="cmp-head">Use Workflow A when...</div>
+          <p>You want a visually distinctive deck. You have time to compare 3 templates. You need animated transitions, custom fonts, and a specific mood.</p>
+          <div class="verdict">→ For pitches, keynotes, client presentations</div>
+        </div>
+        <div class="cmp cmp-b">
+          <div class="cmp-head">Use Workflow B when...</div>
+          <p>You need a quick deck. You know which theme you want. You want a single self-contained HTML file with zero external dependencies.</p>
+          <div class="verdict">→ For stand-ups, tech talks, internal reports</div>
+        </div>
+      </div>
+      <div class="slide-meta">
+        <div>Decision</div>
+        <div>07<span class="dot"></span>14</div>
+      </div>
+    </section>
+
+    <!-- SLIDE 8: HOW IT WORKS -->
+    <section class="slide s8">
+      <div class="topbar dark-text">
+        <div>Workflow A Process</div>
+        <div class="pill">Steps</div>
+      </div>
+      <div class="kicker">How It Works</div>
+      <h1 class="heading display">Four Steps</h1>
+      <div class="steps">
+        <div class="step sa">
+          <div class="n display">01</div>
+          <div class="t">Describe</div>
+          <div class="d">Tell the skill what you want to present — topic, audience, occasion.</div>
+          <div class="arrow"></div>
+        </div>
+        <div class="step sb">
+          <div class="n display">02</div>
+          <div class="t">Pick</div>
+          <div class="d">The skill shows 3 candidates. Choose the template that fits your vibe.</div>
+          <div class="arrow"></div>
+        </div>
+        <div class="step sc">
+          <div class="n display">03</div>
+          <div class="t">Refine</div>
+          <div class="d">Add, remove, or reorder slides. Adjust content to match your outline.</div>
+          <div class="arrow"></div>
+        </div>
+        <div class="step sd">
+          <div class="n display">04</div>
+          <div class="t">Present</div>
+          <div class="d">Open the HTML in any browser. Keyboard, click, or swipe to navigate.</div>
+        </div>
+      </div>
+      <div class="slide-meta">
+        <div>Process</div>
+        <div>08<span class="dot"></span>14</div>
+      </div>
+    </section>
+
+    <!-- SLIDE 9: FEATURES -->
+    <section class="slide s9">
+      <div class="topbar dark-text">
+        <div>Capabilities</div>
+        <div class="pill">Features</div>
+      </div>
+      <div class="kicker">Built-in Features</div>
+      <h1 class="heading display">Everything You Need</h1>
+      <div class="feat-grid">
+        <div class="feat">
+          <div class="icon">✓</div>
+          <div class="txt body-text">Keyboard navigation (arrow keys)</div>
+        </div>
+        <div class="feat">
+          <div class="icon pk">✓</div>
+          <div class="txt body-text">Click & touch / swipe support</div>
+        </div>
+        <div class="feat">
+          <div class="icon og">✓</div>
+          <div class="txt body-text">Animated slide transitions</div>
+        </div>
+        <div class="feat">
+          <div class="icon">✓</div>
+          <div class="txt body-text">Staggered content reveals</div>
+        </div>
+        <div class="feat">
+          <div class="icon pk">✓</div>
+          <div class="txt body-text">Progress dots & slide counter</div>
+        </div>
+        <div class="feat">
+          <div class="icon og">✓</div>
+          <div class="txt body-text">Fully responsive scaling</div>
+        </div>
+        <div class="feat">
+          <div class="icon">✓</div>
+          <div class="txt body-text">Self-contained single HTML file</div>
+        </div>
+        <div class="feat">
+          <div class="icon pk">✓</div>
+          <div class="txt body-text">No external JS dependencies</div>
+        </div>
+        <div class="feat">
+          <div class="icon og">✓</div>
+          <div class="txt body-text">Custom fonts per template</div>
+        </div>
+        <div class="feat">
+          <div class="icon">✓</div>
+          <div class="txt body-text">Custom color palettes</div>
+        </div>
+        <div class="feat">
+          <div class="icon pk">✓</div>
+          <div class="txt body-text">Bar charts & stat layouts</div>
+        </div>
+        <div class="feat">
+          <div class="icon og">✓</div>
+          <div class="txt body-text">Split layouts & quote slides</div>
+        </div>
+      </div>
+      <div class="slide-meta light-text">
+        <div>Features</div>
+        <div>09<span class="dot"></span>14</div>
+      </div>
+    </section>
+
+    <!-- SLIDE 10: OUTPUT DIR -->
+    <section class="slide s10">
+      <div class="topbar dark-text">
+        <div>Output</div>
+        <div class="pill">Paths</div>
+      </div>
+      <div class="kicker">Where Files Are Saved</div>
+      <h1 class="heading display">Output Directory</h1>
+      <div class="code-block">
+        <div class="code-label">Default Output</div>
+        <code>~/slides/&lt;deck-name&gt;/index.html</code>
+      </div>
+      <div class="code-block" style="top: 420px;">
+        <div class="code-label">Preview Files (Workflow A)</div>
+        <code>~/slides/&lt;deck-name&gt;/previews/</code>
+      </div>
+      <p class="desc">You can specify any output directory: "save it to ~/my-decks" or "output to /tmp/slides". The skill respects your intent.</p>
+      <div class="slide-meta">
+        <div>Output</div>
+        <div>10<span class="dot"></span>14</div>
+      </div>
+    </section>
+
+    <!-- SLIDE 11: TRY IT -->
+    <section class="slide s11">
+      <div class="topbar dark-text">
+        <div>Get Started</div>
+        <div class="pill">Examples</div>
+      </div>
+      <div class="kicker">Try It Now</div>
+      <h1 class="heading display">Start Creating</h1>
+      <div class="examples">
+        <div class="example">
+          <div class="ex-label">Workflow A — Templates</div>
+          <p>"Create a presentation about <strong>our Q3 product roadmap</strong> for a team review"</p>
+        </div>
+        <div class="example">
+          <div class="ex-label">Workflow B — Theme</div>
+          <p>"Make a <strong>cyberpunk presentation</strong> on AI agent architectures"</p>
+        </div>
+      </div>
+      <div class="slide-meta">
+        <div>Try It</div>
+        <div>11<span class="dot"></span>14</div>
+      </div>
+    </section>
+
+    <!-- SLIDE 12: INSTALL -->
+    <section class="slide s12">
+      <div class="topbar dark-text">
+        <div>Install</div>
+        <div class="pill">Setup</div>
+      </div>
+      <div class="kicker">One Command</div>
+      <h1 class="heading display">Get Started</h1>
+      <div class="code-block">
+        <code>npx skills add yugasun/slides-skills</code>
+      </div>
+      <p class="note">Requires Claude Code. After install, just start a conversation and describe what you want to present.</p>
+      <div class="slide-meta">
+        <div>Install</div>
+        <div>12<span class="dot"></span>14</div>
+      </div>
+    </section>
+
+    <!-- SLIDE 13: WHAT CAN YOU BUILD -->
+    <section class="slide s13">
+      <div class="topbar dark-text">
+        <div>Inspiration</div>
+        <div class="pill">Examples</div>
+      </div>
+      <div class="kicker">What Can You Build</div>
+      <h1 class="heading display">Use Cases</h1>
+      <div class="gallery">
+        <div class="thumb t-studio" style="font-size:10px;"><span>Studio · Product Launch</span></div>
+        <div class="thumb t-bluepro" style="font-size:10px;"><span>Blue Pro · Quarterly Review</span></div>
+        <div class="thumb t-cobalt" style="font-size:10px;"><span>Cobalt Grid · Tech Talk</span></div>
+        <div class="thumb t-blockframe" style="font-size:10px;"><span>BlockFrame · Hackathon</span></div>
+        <div class="thumb t-playful" style="font-size:10px;"><span>Playful · Indie Launch</span></div>
+        <div class="thumb t-signal" style="font-size:10px;"><span>Signal · Research Talk</span></div>
+        <div class="thumb t-capsule" style="font-size:10px;"><span>Capsule · Startup Deck</span></div>
+        <div class="thumb t-broadside" style="font-size:10px;"><span>Broadside · Brand Manifesto</span></div>
+      </div>
+      <div class="slide-meta">
+        <div>Inspiration</div>
+        <div>13<span class="dot"></span>14</div>
+      </div>
+    </section>
+
+    <!-- SLIDE 14: CTA -->
+    <section class="slide s14">
+      <div class="topbar dark-text">
+        <div>End of Deck</div>
+        <div class="pill">Fin.</div>
+      </div>
+      <div class="big-cta">
+        <div class="line1 display">Level Up</div>
+        <div class="line2 display">Your Deck</div>
+      </div>
+      <p class="sub body-text">Stop wrestling with slide software. Start creating presentations that actually look like you gave a damn.</p>
+      <div class="stamp">
+        <div class="inner">
+          <div class="num display">14/14</div>
+          <div class="lbl mono">Slides Skill</div>
+        </div>
+      </div>
+      <div class="slide-meta light-text">
+        <div>Closing</div>
+        <div>14<span class="dot"></span>14</div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<script>
+(function() {
+  const totalSlides = 14;
+  let currentSlide = 0;
+  const container = document.getElementById('slidesContainer');
+  const counter = document.getElementById('slideCounter');
+  const dotsContainer = document.getElementById('navDots');
+
+  for (let i = 0; i < totalSlides; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+    dot.style.borderColor = 'var(--ink)';
+    dot.addEventListener('click', () => goToSlide(i));
+    dotsContainer.appendChild(dot);
+  }
+
+  const dotEls = document.querySelectorAll('.nav-dot');
+
+  function updateUI() {
+    container.style.transform = `translateY(-${currentSlide * 100}vh)`;
+    counter.textContent = String(currentSlide + 1).padStart(2, '0') + ' / ' + totalSlides;
+    dotEls.forEach((d, i) => {
+      d.classList.toggle('active', i === currentSlide);
+    });
+  }
+
+  function goToSlide(index) {
+    if (index < 0 || index >= totalSlides) return;
+    currentSlide = index;
+    updateUI();
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); goToSlide(currentSlide + 1); }
+    else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') { e.preventDefault(); goToSlide(currentSlide - 1); }
+    else if (e.key === 'Home') { e.preventDefault(); goToSlide(0); }
+    else if (e.key === 'End') { e.preventDefault(); goToSlide(totalSlides - 1); }
+  });
+
+  let touchStartY = 0;
+  document.addEventListener('touchstart', (e) => { touchStartY = e.touches[0].clientY; }, { passive: true });
+  document.addEventListener('touchend', (e) => {
+    const diff = touchStartY - e.changedTouches[0].clientY;
+    if (Math.abs(diff) > 50) { diff > 0 ? goToSlide(currentSlide + 1) : goToSlide(currentSlide - 1); }
+  }, { passive: true });
+
+  let wheelLock = false;
+  document.addEventListener('wheel', (e) => {
+    if (wheelLock) return;
+    wheelLock = true;
+    e.deltaY > 0 ? goToSlide(currentSlide + 1) : goToSlide(currentSlide - 1);
+    setTimeout(() => wheelLock = false, 700);
+  }, { passive: true });
+
+  updateUI();
+})();
+</script>
+</body>
+</html>

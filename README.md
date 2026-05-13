@@ -4,9 +4,11 @@
 
 Generate high-quality HTML slide presentations with beautiful templates.
 
-## Live Demo
+## Live Demos
 
-👉 **[Open Demo](https://yugasun.github.io/slides-skills/)** — 10-slide showcase of the 8-bit-orbit template, demonstrating the skill's capabilities. Use arrow keys or swipe to navigate.
+👉 **[Main Demo](https://yugasun.github.io/slides-skills/)** — 14-slide showcase of the 8-bit-orbit template, explaining the skill's full capabilities. Use arrow keys or swipe to navigate.
+
+👉 **[Creative Mode Demo](https://yugasun.github.io/slides-skills/creative.html)** — 14-slide showcase of the Creative Mode template style, showcasing the diverse layout possibilities of Workflow A templates.
 
 ## Install
 

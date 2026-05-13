@@ -15,481 +15,100 @@
       --deep-navy: #0F1B3D;
       --dark-void: #0A0E27;
       --soft-lavender: #E2D5F2;
-      --pixel-size: 4px;
       --font-display: 'Tektur', cursive;
       --font-body: 'Chakra Petch', sans-serif;
       --font-mono: 'Space Mono', monospace;
     }
-
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; overflow: hidden; font-family: var(--font-body); color: var(--dark-void); background: var(--dark-void); }
+    .deck { width: 100%; height: 100vh; overflow: hidden; position: relative; }
+    .slides-container { width: 100%; height: 100%; transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
 
-    html, body {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      font-family: var(--font-body);
-      color: var(--dark-void);
-      background: var(--dark-void);
-    }
+    .slide { width: 100%; height: 100vh; min-height: 100vh; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 3vh 4vw; }
 
-    .deck {
-      width: 100%;
-      height: 100vh;
-      overflow: hidden;
-      position: relative;
-    }
+    /* Atmospheric layers */
+    .scanlines::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(10, 14, 39, 0.04) 2px, rgba(10, 14, 39, 0.04) 4px); pointer-events: none; z-index: 50; mix-blend-mode: multiply; }
+    .grain::before { content: ""; position: absolute; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); opacity: 0.035; pointer-events: none; z-index: 49; }
+    .crt-glow::after { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse at center, transparent 50%, rgba(10, 14, 39, 0.25) 100%); pointer-events: none; z-index: 51; }
 
-    .slides-container {
-      width: 100%;
-      height: 100%;
-      transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .slide {
-      width: 100%;
-      height: 100vh;
-      min-height: 100vh;
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 3vh 4vw;
-    }
-
-    /* Scanlines */
-    .scanlines::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(10, 14, 39, 0.04) 2px, rgba(10, 14, 39, 0.04) 4px);
-      pointer-events: none;
-      z-index: 50;
-      mix-blend-mode: multiply;
-    }
-
-    /* Grain */
-    .grain::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      opacity: 0.035;
-      pointer-events: none;
-      z-index: 49;
-    }
-
-    /* CRT glow */
-    .crt-glow::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at center, transparent 50%, rgba(10, 14, 39, 0.25) 100%);
-      pointer-events: none;
-      z-index: 51;
-    }
-
-    /* Pixel grid backgrounds */
-    .bg-grid {
-      background-color: var(--dark-void);
-      background-image: linear-gradient(rgba(94, 220, 244, 0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(94, 220, 244, 0.07) 1px, transparent 1px);
-      background-size: 40px 40px;
-    }
-
+    .bg-grid { background-color: var(--dark-void); background-image: linear-gradient(rgba(94, 220, 244, 0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(94, 220, 244, 0.07) 1px, transparent 1px); background-size: 40px 40px; }
     .bg-grid-pink { background-color: var(--neon-pink); background-image: linear-gradient(rgba(15, 27, 61, 0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(15, 27, 61, 0.06) 1px, transparent 1px); background-size: 40px 40px; }
-
     .bg-grid-cyan { background-color: var(--neon-cyan); background-image: linear-gradient(rgba(15, 27, 61, 0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(15, 27, 61, 0.08) 1px, transparent 1px); background-size: 40px 40px; }
-
     .bg-grid-lavender { background-color: var(--soft-lavender); background-image: linear-gradient(rgba(15, 27, 61, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(15, 27, 61, 0.05) 1px, transparent 1px); background-size: 40px 40px; }
-
     .bg-grid-yellow { background-color: var(--neon-yellow); background-image: linear-gradient(rgba(15, 27, 61, 0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(15, 27, 61, 0.06) 1px, transparent 1px); background-size: 40px 40px; }
+    .bg-grid-dark { background-color: #0a0a1a; background-image: linear-gradient(rgba(94, 220, 244, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(94, 220, 244, 0.05) 1px, transparent 1px); background-size: 40px 40px; }
 
-    /* Starfield */
-    .starfield {
-      position: absolute;
-      inset: 0;
-      overflow: hidden;
-      z-index: 1;
-    }
-
-    .starfield .star {
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      background: var(--neon-cyan);
-      opacity: 0.6;
-      animation: twinkle 3s infinite ease-in-out;
-    }
-
+    .starfield { position: absolute; inset: 0; overflow: hidden; z-index: 1; }
+    .starfield .star { position: absolute; width: 4px; height: 4px; background: var(--neon-cyan); opacity: 0.6; animation: twinkle 3s infinite ease-in-out; }
     .starfield .star:nth-child(2n) { background: var(--neon-yellow); }
     .starfield .star:nth-child(3n) { background: var(--neon-pink); }
     .starfield .star:nth-child(4n) { width: 6px; height: 6px; }
+    @keyframes twinkle { 0%, 100% { opacity: 0.3; transform: scale(1); } 50% { opacity: 0.9; transform: scale(1.3); } }
 
-    @keyframes twinkle {
-      0%, 100% { opacity: 0.3; transform: scale(1); }
-      50% { opacity: 0.9; transform: scale(1.3); }
-    }
+    .pixel-particles { position: absolute; inset: 0; overflow: hidden; z-index: 1; pointer-events: none; }
+    .pixel-particles .p { position: absolute; width: 8px; height: 8px; opacity: 0.4; animation: float 8s infinite ease-in-out; }
+    @keyframes float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-30px) rotate(90deg); } }
 
-    /* Pixel particles */
-    .pixel-particles {
-      position: absolute;
-      inset: 0;
-      overflow: hidden;
-      z-index: 1;
-      pointer-events: none;
-    }
+    .pixel-btn { display: inline-block; font-family: var(--font-display); font-weight: 700; font-size: 1rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 16px 36px; background: var(--neon-cyan); color: var(--deep-navy); border: none; cursor: pointer; position: relative; box-shadow: 4px 0 0 0 var(--deep-navy), 0 4px 0 0 var(--deep-navy), 4px 4px 0 0 var(--deep-navy), 8px 4px 0 0 var(--neon-yellow), 4px 8px 0 0 var(--neon-yellow), 8px 8px 0 0 var(--neon-yellow); transition: transform 0.1s, box-shadow 0.1s; }
+    .pixel-btn:hover { transform: translate(2px, 2px); box-shadow: 2px 0 0 0 var(--deep-navy), 0 2px 0 0 var(--deep-navy), 2px 2px 0 0 var(--deep-navy), 4px 2px 0 0 var(--neon-yellow), 2px 4px 0 0 var(--neon-yellow), 4px 4px 0 0 var(--neon-yellow); }
+    .pixel-btn.pink-btn { background: var(--neon-pink); box-shadow: 4px 0 0 0 var(--deep-navy), 0 4px 0 0 var(--deep-navy), 4px 4px 0 0 var(--deep-navy), 8px 4px 0 0 var(--neon-cyan), 4px 8px 0 0 var(--neon-cyan), 8px 8px 0 0 var(--neon-cyan); }
 
-    .pixel-particles .p {
-      position: absolute;
-      width: 8px;
-      height: 8px;
-      opacity: 0.4;
-      animation: float 8s infinite ease-in-out;
-    }
+    .pixel-hero-text { font-family: var(--font-display); font-weight: 900; font-size: clamp(3rem, 10vw, 8rem); line-height: 1.05; color: var(--neon-cyan); text-shadow: 4px 4px 0 var(--neon-yellow), 8px 8px 0 var(--deep-navy); letter-spacing: 0.04em; }
 
-    @keyframes float {
-      0%, 100% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-30px) rotate(90deg); }
-    }
-
-    /* Pixel border */
-    .pixel-box {
-      position: relative;
-      background: var(--deep-navy);
-      color: white;
-    }
-
-    .pixel-box::before {
-      content: "";
-      position: absolute;
-      inset: -4px;
-      background: var(--neon-cyan);
-      z-index: -1;
-      clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));
-    }
-
-    .pixel-box.yellow::before { background: var(--neon-yellow); }
-    .pixel-box.pink::before { background: var(--neon-pink); }
-
-    /* Pixel button */
-    .pixel-btn {
-      display: inline-block;
-      font-family: var(--font-display);
-      font-weight: 700;
-      font-size: 1rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 16px 36px;
-      background: var(--neon-cyan);
-      color: var(--deep-navy);
-      border: none;
-      cursor: pointer;
-      position: relative;
-      box-shadow: 4px 0 0 0 var(--deep-navy), 0 4px 0 0 var(--deep-navy), 4px 4px 0 0 var(--deep-navy), 8px 4px 0 0 var(--neon-yellow), 4px 8px 0 0 var(--neon-yellow), 8px 8px 0 0 var(--neon-yellow);
-      transition: transform 0.1s, box-shadow 0.1s;
-    }
-
-    .pixel-btn:hover {
-      transform: translate(2px, 2px);
-      box-shadow: 2px 0 0 0 var(--deep-navy), 0 2px 0 0 var(--deep-navy), 2px 2px 0 0 var(--deep-navy), 4px 2px 0 0 var(--neon-yellow), 2px 4px 0 0 var(--neon-yellow), 4px 4px 0 0 var(--neon-yellow);
-    }
-
-    .pixel-btn.pink-btn {
-      background: var(--neon-pink);
-      box-shadow: 4px 0 0 0 var(--deep-navy), 0 4px 0 0 var(--deep-navy), 4px 4px 0 0 var(--deep-navy), 8px 4px 0 0 var(--neon-cyan), 4px 8px 0 0 var(--neon-cyan), 8px 8px 0 0 var(--neon-cyan);
-    }
-
-    /* Hero text */
-    .pixel-hero-text {
-      font-family: var(--font-display);
-      font-weight: 900;
-      font-size: clamp(3rem, 10vw, 8rem);
-      line-height: 1.05;
-      color: var(--neon-cyan);
-      text-shadow: 4px 4px 0 var(--neon-yellow), 8px 8px 0 var(--deep-navy);
-      letter-spacing: 0.04em;
-    }
-
-    /* Pixel corners */
     .pixel-corners { position: relative; }
-
-    .pixel-corners::before, .pixel-corners::after {
-      content: "";
-      position: absolute;
-      width: 24px;
-      height: 24px;
-      border: 4px solid var(--neon-cyan);
-    }
-
+    .pixel-corners::before, .pixel-corners::after { content: ""; position: absolute; width: 24px; height: 24px; border: 4px solid var(--neon-cyan); }
     .pixel-corners::before { top: -8px; left: -8px; border-right: none; border-bottom: none; }
     .pixel-corners::after { bottom: -8px; right: -8px; border-left: none; border-top: none; }
     .pixel-corners.yellow-corners::before, .pixel-corners.yellow-corners::after { border-color: var(--neon-yellow); }
     .pixel-corners.pink-corners::before, .pixel-corners.pink-corners::after { border-color: var(--neon-pink); }
 
-    /* Section labels */
-    .pixel-label {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--neon-yellow);
-      background: var(--deep-navy);
-      padding: 6px 14px;
-      display: inline-block;
-      margin-bottom: 1.5rem;
-    }
-
+    .pixel-label { font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--neon-yellow); background: var(--deep-navy); padding: 6px 14px; display: inline-block; margin-bottom: 1.5rem; }
     .pixel-label.dark-label { color: var(--deep-navy); background: var(--neon-yellow); }
     .pixel-label.cyan-label { color: var(--deep-navy); background: var(--neon-cyan); }
     .pixel-label.pink-label { color: var(--deep-navy); background: var(--neon-pink); }
 
-    /* Slide content */
-    .slide-content {
-      position: relative;
-      z-index: 10;
-      width: 100%;
-      max-width: 1200px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-
-    h1, h2, h3, h4 {
-      font-family: var(--font-display);
-      font-weight: 700;
-      line-height: 1.15;
-    }
-
+    .slide-content { position: relative; z-index: 10; width: 100%; max-width: 1200px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+    h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 700; line-height: 1.15; }
     h1 { font-size: clamp(2rem, 5vw, 4rem); }
     h2 { font-size: clamp(1.5rem, 3.5vw, 2.8rem); }
     h3 { font-size: clamp(1.1rem, 2vw, 1.5rem); }
+    p, li { font-family: var(--font-body); font-size: clamp(0.9rem, 1.2vw, 1.15rem); line-height: 1.7; font-weight: 400; }
 
-    p, li {
-      font-family: var(--font-body);
-      font-size: clamp(0.9rem, 1.2vw, 1.15rem);
-      line-height: 1.7;
-      font-weight: 400;
-    }
-
-    /* Navigation */
-    .nav-dots {
-      position: fixed;
-      right: 24px;
-      top: 50%;
-      transform: translateY(-50%);
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      z-index: 100;
-    }
-
-    .nav-dot {
-      width: 12px;
-      height: 12px;
-      border: 2px solid var(--neon-cyan);
-      background: transparent;
-      cursor: pointer;
-      position: relative;
-      transition: all 0.3s;
-    }
-
-    .nav-dot::after {
-      content: "";
-      position: absolute;
-      inset: 2px;
-      background: var(--neon-cyan);
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-
+    .nav-dots { position: fixed; right: 24px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 12px; z-index: 100; }
+    .nav-dot { width: 12px; height: 12px; border: 2px solid var(--neon-cyan); background: transparent; cursor: pointer; position: relative; transition: all 0.3s; }
+    .nav-dot::after { content: ""; position: absolute; inset: 2px; background: var(--neon-cyan); opacity: 0; transition: opacity 0.3s; }
     .nav-dot.active::after { opacity: 1; }
     .nav-dot:hover { border-color: var(--neon-yellow); }
 
-    .slide-counter {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
-      color: var(--neon-cyan);
-      background: rgba(10, 14, 39, 0.8);
-      padding: 8px 20px;
-      z-index: 100;
-      letter-spacing: 0.15em;
-    }
+    .slide-counter { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); font-family: var(--font-mono); font-size: 0.8rem; color: var(--neon-cyan); background: rgba(10, 14, 39, 0.8); padding: 8px 20px; z-index: 100; letter-spacing: 0.15em; }
+    .nav-hint { position: fixed; bottom: 24px; right: 24px; font-family: var(--font-mono); font-size: 0.65rem; color: var(--neon-cyan); opacity: 0.5; z-index: 100; letter-spacing: 0.1em; }
 
-    .nav-hint {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      color: var(--neon-cyan);
-      opacity: 0.5;
-      z-index: 100;
-      letter-spacing: 0.1em;
-    }
+    .hero-subtitle { font-family: var(--font-mono); font-size: 0.85rem; letter-spacing: 0.3em; color: var(--neon-pink); text-transform: uppercase; margin-bottom: 1.5rem; }
+    .hero-tagline { font-family: var(--font-body); font-size: clamp(0.9rem, 1.5vw, 1.2rem); color: rgba(255,255,255,0.7); max-width: 500px; text-align: center; margin-top: 2rem; line-height: 1.8; }
+    .hero-badges { display: flex; gap: 16px; margin-top: 3rem; flex-wrap: wrap; justify-content: center; }
+    .hero-badge { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 8px 16px; border: 2px solid var(--neon-yellow); color: var(--neon-yellow); }
 
-    /* Slide-specific styles */
-    .hero-subtitle {
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      letter-spacing: 0.3em;
-      color: var(--neon-pink);
-      text-transform: uppercase;
-      margin-bottom: 1.5rem;
-    }
-
-    .hero-tagline {
-      font-family: var(--font-body);
-      font-size: clamp(0.9rem, 1.5vw, 1.2rem);
-      color: rgba(255,255,255,0.7);
-      max-width: 500px;
-      text-align: center;
-      margin-top: 2rem;
-      line-height: 1.8;
-    }
-
-    .hero-badges {
-      display: flex;
-      gap: 16px;
-      margin-top: 3rem;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .hero-badge {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 8px 16px;
-      border: 2px solid var(--neon-yellow);
-      color: var(--neon-yellow);
-    }
-
-    /* Workflow cards */
-    .workflow-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 32px;
-      width: 100%;
-      max-width: 900px;
-    }
-
-    @media (max-width: 700px) {
-      .workflow-grid { grid-template-columns: 1fr; }
-    }
-
-    .workflow-card {
-      padding: 36px 28px;
-      position: relative;
-    }
-
-    .workflow-card.dark-card {
-      background: var(--deep-navy);
-      color: white;
-      box-shadow: 8px 8px 0 var(--neon-cyan);
-    }
-
-    .workflow-card.light-card {
-      background: white;
-      color: var(--deep-navy);
-      box-shadow: 6px 6px 0 rgba(15, 27, 61, 0.15);
-    }
-
-    .workflow-card h3 {
-      font-size: 1.3rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .workflow-card .sub {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-bottom: 1.2rem;
-    }
-
+    .workflow-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; width: 100%; max-width: 900px; }
+    @media (max-width: 700px) { .workflow-grid { grid-template-columns: 1fr; } }
+    .workflow-card { padding: 36px 28px; position: relative; }
+    .workflow-card.dark-card { background: var(--deep-navy); color: white; box-shadow: 8px 8px 0 var(--neon-cyan); }
+    .workflow-card.light-card { background: white; color: var(--deep-navy); box-shadow: 6px 6px 0 rgba(15, 27, 61, 0.15); }
+    .workflow-card h3 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+    .workflow-card .sub { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1.2rem; }
     .dark-card .sub { color: var(--neon-yellow); }
     .light-card .sub { color: var(--neon-pink); }
-
-    .workflow-card p {
-      font-size: 0.9rem;
-      line-height: 1.6;
-      margin-bottom: 1rem;
-    }
-
+    .workflow-card p { font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem; }
     .dark-card p { color: rgba(255,255,255,0.7); }
     .light-card p { color: rgba(15, 27, 61, 0.7); }
+    .workflow-card ul { list-style: none; margin-top: 1rem; }
+    .workflow-card ul li { font-size: 0.85rem; padding: 4px 0; position: relative; padding-left: 16px; }
+    .dark-card ul li::before { content: ">"; position: absolute; left: 0; color: var(--neon-cyan); font-family: var(--font-mono); }
+    .light-card ul li::before { content: ">"; position: absolute; left: 0; color: var(--neon-pink); font-family: var(--font-mono); }
 
-    .workflow-card ul {
-      list-style: none;
-      margin-top: 1rem;
-    }
-
-    .workflow-card ul li {
-      font-size: 0.85rem;
-      padding: 4px 0;
-      position: relative;
-      padding-left: 16px;
-    }
-
-    .dark-card ul li::before {
-      content: ">";
-      position: absolute;
-      left: 0;
-      color: var(--neon-cyan);
-      font-family: var(--font-mono);
-    }
-
-    .light-card ul li::before {
-      content: ">";
-      position: absolute;
-      left: 0;
-      color: var(--neon-pink);
-      font-family: var(--font-mono);
-    }
-
-    /* Template gallery */
-    .template-gallery {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-      width: 100%;
-      max-width: 900px;
-    }
-
-    @media (max-width: 800px) {
-      .template-gallery { grid-template-columns: repeat(2, 1fr); }
-    }
-
-    .template-thumb {
-      aspect-ratio: 16/9;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      font-weight: 700;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .template-thumb span {
-      position: relative;
-      z-index: 2;
-      text-align: center;
-      line-height: 1.4;
-    }
-
+    .template-gallery { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; width: 100%; max-width: 900px; }
+    @media (max-width: 800px) { .template-gallery { grid-template-columns: repeat(2, 1fr); } }
+    .template-thumb { aspect-ratio: 16/9; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; position: relative; overflow: hidden; }
+    .template-thumb span { position: relative; z-index: 2; text-align: center; line-height: 1.4; }
     .thumb-studio { background: #1c1c1c; color: #f5d200; }
     .thumb-broadside { background: #0a0a0a; color: #ff6b35; }
     .thumb-signal { background: #0d1929; color: #c4a35a; }
@@ -498,236 +117,146 @@
     .thumb-blue-pro { background: #e8eef5; color: #2563a8; }
     .thumb-blockframe { background: #1a1a2e; color: #a855f7; }
     .thumb-playful { background: #fff8e7; color: #f97316; }
+    .thumb-daisy { background: #fef9f0; color: #e8a87c; }
+    .thumb-8bit { background: #0a0e27; color: #5edcf4; }
+    .thumb-grove { background: #1a2e1a; color: #7dcea0; }
+    .thumb-coral { background: #2d1a0a; color: #e8a87c; }
 
-    /* Step list */
-    .steps-list {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      width: 100%;
-      max-width: 700px;
-    }
-
-    .step-item {
-      display: grid;
-      grid-template-columns: 48px 1fr;
-      gap: 20px;
-      align-items: start;
-    }
-
-    .step-num {
-      width: 48px;
-      height: 48px;
-      background: var(--neon-cyan);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-display);
-      font-size: 1.4rem;
-      font-weight: 900;
-      color: var(--deep-navy);
-      box-shadow: 4px 4px 0 var(--deep-navy);
-    }
-
-    .step-item:nth-child(even) .step-num {
-      background: var(--neon-yellow);
-    }
-
-    .step-content h4 {
-      font-size: 1rem;
-      color: var(--neon-cyan);
-      margin-bottom: 4px;
-    }
-
-    .step-content p {
-      font-size: 0.85rem;
-      color: rgba(255,255,255,0.6);
-      line-height: 1.5;
-    }
-
-    /* Feature list */
-    .feature-list {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px 40px;
-      list-style: none;
-      width: 100%;
-      max-width: 800px;
-    }
-
-    @media (max-width: 600px) {
-      .feature-list { grid-template-columns: 1fr; }
-    }
-
-    .feature-list li {
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      color: rgba(255,255,255,0.8);
-      padding: 8px 0;
-      border-bottom: 1px dashed rgba(94, 220, 244, 0.2);
-      position: relative;
-      padding-left: 20px;
-    }
-
-    .feature-list li::before {
-      content: "+";
-      position: absolute;
-      left: 0;
-      color: var(--neon-cyan);
-      font-weight: 700;
-    }
-
-    /* Theme swatches */
-    .theme-swatches {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-      width: 100%;
-      max-width: 800px;
-    }
-
-    @media (max-width: 700px) {
-      .theme-swatches { grid-template-columns: repeat(2, 1fr); }
-    }
-
-    .theme-swatch {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .swatch-preview {
-      aspect-ratio: 16/9;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-    }
-
-    .swatch-name {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      color: rgba(255,255,255,0.7);
-      text-align: center;
-      letter-spacing: 0.05em;
-    }
-
+    .theme-swatches { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; width: 100%; max-width: 800px; }
+    @media (max-width: 700px) { .theme-swatches { grid-template-columns: repeat(2, 1fr); } }
+    .theme-swatch { display: flex; flex-direction: column; gap: 8px; }
+    .swatch-preview { aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.05em; text-transform: uppercase; }
+    .swatch-name { font-family: var(--font-mono); font-size: 0.7rem; color: rgba(255,255,255,0.7); text-align: center; letter-spacing: 0.05em; }
     .swatch-cyberpunk { background: linear-gradient(135deg, #0a0a1a 50%, #00f5ff 50%); color: #00f5ff; }
     .swatch-corporate { background: linear-gradient(135deg, #e8eef5 50%, #2563a8 50%); color: #2563a8; }
     .swatch-minimal { background: linear-gradient(135deg, #ffffff 50%, #000000 50%); color: #000; }
     .swatch-nature { background: linear-gradient(135deg, #f5f0e8 50%, #2d5a27 50%); color: #2d5a27; }
 
-    /* CTA */
-    .cta-content {
-      text-align: center;
-      max-width: 600px;
-    }
+    .steps-list { display: flex; flex-direction: column; gap: 20px; width: 100%; max-width: 700px; }
+    .step-item { display: grid; grid-template-columns: 48px 1fr; gap: 20px; align-items: start; }
+    .step-num { width: 48px; height: 48px; background: var(--neon-cyan); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 1.4rem; font-weight: 900; color: var(--deep-navy); box-shadow: 4px 4px 0 var(--deep-navy); }
+    .step-item:nth-child(even) .step-num { background: var(--neon-yellow); }
+    .step-content h4 { font-size: 1rem; color: var(--neon-cyan); margin-bottom: 4px; }
+    .step-content p { font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 1.5; }
 
-    .cta-content h2 {
-      font-size: clamp(2rem, 5vw, 3.5rem);
-      color: var(--neon-cyan);
-      margin-bottom: 1rem;
-      text-shadow: 4px 4px 0 var(--deep-navy), 8px 8px 0 var(--neon-yellow);
-    }
+    .feature-list { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 40px; list-style: none; width: 100%; max-width: 800px; }
+    @media (max-width: 600px) { .feature-list { grid-template-columns: 1fr; } }
+    .feature-list li { font-family: var(--font-mono); font-size: 0.85rem; color: rgba(255,255,255,0.8); padding: 8px 0; border-bottom: 1px dashed rgba(94, 220, 244, 0.2); position: relative; padding-left: 20px; }
+    .feature-list li::before { content: "+"; position: absolute; left: 0; color: var(--neon-cyan); font-weight: 700; }
 
-    .cta-content p {
-      color: rgba(255,255,255,0.7);
-      margin-bottom: 2.5rem;
-      font-size: 1.1rem;
-    }
+    .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; width: 100%; max-width: 900px; }
+    @media (max-width: 800px) { .stats-row { grid-template-columns: repeat(2, 1fr); } }
+    .stat-box { text-align: center; padding: 28px 16px; border: 2px solid rgba(94, 220, 244, 0.25); position: relative; }
+    .stat-box::before { content: ""; position: absolute; top: -2px; left: -2px; width: 16px; height: 16px; border-top: 3px solid var(--neon-cyan); border-left: 3px solid var(--neon-cyan); }
+    .stat-box::after { content: ""; position: absolute; bottom: -2px; right: -2px; width: 16px; height: 16px; border-bottom: 3px solid var(--neon-cyan); border-right: 3px solid var(--neon-cyan); }
+    .stat-val { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3rem); font-weight: 900; color: var(--neon-cyan); line-height: 1; margin-bottom: 8px; }
+    .stat-lbl { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--neon-pink); }
 
-    .cta-buttons {
-      display: flex;
-      gap: 20px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; width: 100%; max-width: 800px; }
+    @media (max-width: 700px) { .compare-grid { grid-template-columns: 1fr; } }
+    .compare-card { padding: 28px; position: relative; }
+    .compare-card.left-card { background: rgba(94, 220, 244, 0.08); border: 2px solid rgba(94, 220, 244, 0.2); }
+    .compare-card.right-card { background: rgba(240, 166, 202, 0.08); border: 2px solid rgba(240, 166, 202, 0.2); }
+    .compare-card h4 { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 12px; }
+    .left-card h4 { color: var(--neon-cyan); }
+    .right-card h4 { color: var(--neon-pink); }
+    .compare-card p { font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 1.5; }
+    .compare-card .verdict { margin-top: 12px; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.08em; }
+    .left-card .verdict { color: var(--neon-cyan); }
+    .right-card .verdict { color: var(--neon-pink); }
 
-    .pixel-landscape {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 120px;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      gap: 0;
-      z-index: 2;
-      opacity: 0.3;
-      pointer-events: none;
-    }
+    .cta-content { text-align: center; max-width: 600px; }
+    .cta-content h2 { font-size: clamp(2rem, 5vw, 3.5rem); color: var(--neon-cyan); margin-bottom: 1rem; text-shadow: 4px 4px 0 var(--deep-navy), 8px 8px 0 var(--neon-yellow); }
+    .cta-content p { color: rgba(255,255,255,0.7); margin-bottom: 2.5rem; font-size: 1.1rem; }
+    .cta-buttons { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
 
-    .mountain {
-      background: var(--deep-navy);
-      width: 80px;
-      position: relative;
-    }
+    .pixel-landscape { position: absolute; bottom: 0; left: 0; right: 0; height: 120px; display: flex; align-items: flex-end; justify-content: center; gap: 0; z-index: 2; opacity: 0.3; pointer-events: none; }
+    .mountain { background: var(--deep-navy); width: 80px; position: relative; }
 
-    @media (prefers-reduced-motion: reduce) {
-      .slides-container { transition: none; }
-      .starfield .star, .pixel-particles .p { animation: none; }
-    }
+    @media (prefers-reduced-motion: reduce) { .slides-container { transition: none; } .starfield .star, .pixel-particles .p { animation: none; } }
   </style>
 </head>
 <body>
 
 <div class="deck" id="deck">
-
   <div class="nav-dots" id="navDots"></div>
-  <div class="slide-counter" id="slideCounter">01 / 10</div>
+  <div class="slide-counter" id="slideCounter">01 / 14</div>
   <div class="nav-hint">USE KEYS ↑ ↓</div>
 
   <div class="slides-container" id="slidesContainer">
 
-    <!-- ========== SLIDE 1: HERO ========== -->
-    <section class="slide bg-grid scanlines grain crt-glow" data-slide="1">
+    <!-- SLIDE 1: HERO -->
+    <section class="slide bg-grid scanlines grain crt-glow">
       <div class="starfield" id="starfield1"></div>
       <div class="pixel-particles" id="particles1"></div>
       <div class="slide-content" style="z-index:10;">
-        <div class="hero-subtitle">Claude Code Skill · Open Source</div>
+        <div class="hero-subtitle">Agent Skill · Open Source · 2026</div>
         <h1 class="pixel-hero-text" style="text-align:center;">SLIDES<br>SKILL</h1>
-        <p class="hero-tagline">Generate stunning HTML presentations with 32 beautiful templates and 4 built-in CSS themes. Just describe what you want.</p>
+        <p class="hero-tagline">Transform ideas into stunning HTML presentations. 32 beautiful templates. 4 built-in themes. One command away.</p>
         <div class="hero-badges">
           <span class="hero-badge">32 Templates</span>
-          <span class="hero-badge">4 Themes</span>
-          <span class="hero-badge">Single HTML File</span>
+          <span class="hero-badge">4 CSS Themes</span>
+          <span class="hero-badge">Self-Contained HTML</span>
         </div>
       </div>
     </section>
 
-    <!-- ========== SLIDE 2: WHAT IS THIS? ========== -->
-    <section class="slide bg-grid-pink scanlines grain" data-slide="2">
+    <!-- SLIDE 2: WHAT IS -->
+    <section class="slide bg-grid-pink scanlines grain">
       <div class="slide-content">
         <span class="pixel-label dark-label">Overview</span>
         <h2 style="color: var(--deep-navy); margin-bottom: 2rem; text-align: center;">What Is Slides Skill?</h2>
         <div style="max-width: 700px; text-align: center;">
           <p style="color: rgba(15,27,61,0.8); font-size: 1.1rem; margin-bottom: 1.5rem; line-height: 1.8;">
-            A <strong>Claude Code skill</strong> that transforms your ideas into pixel-perfect HTML presentations. No PowerPoint. No Google Slides. Just describe your topic, pick a template, and get a self-contained HTML deck.
+            A <strong>Agent Skill</strong> that transforms your ideas into pixel-perfect HTML presentations. No PowerPoint. No Google Slides. Just describe your topic, pick a template, and get a self-contained HTML deck.
           </p>
           <p style="color: rgba(15,27,61,0.7); font-size: 0.95rem; line-height: 1.7;">
-            Works in two modes: <strong>Workflow A</strong> offers 32 hand-crafted templates for polished, visually distinctive decks. <strong>Workflow B</strong> delivers instant self-contained output using built-in CSS themes — zero template selection needed.
+            Works in two modes: <strong>Workflow A</strong> offers 32 hand-crafted templates for polished decks. <strong>Workflow B</strong> delivers instant self-contained output using built-in CSS themes — zero template selection needed.
           </p>
         </div>
       </div>
     </section>
 
-    <!-- ========== SLIDE 3: TWO WORKFLOWS ========== -->
-    <section class="slide bg-grid scanlines grain crt-glow" data-slide="3">
+    <!-- SLIDE 3: STATS -->
+    <section class="slide bg-grid scanlines grain crt-glow">
       <div class="starfield" id="starfield3"></div>
       <div class="slide-content" style="z-index:10;">
+        <span class="pixel-label">By the Numbers</span>
+        <h2 style="color: var(--neon-cyan); margin-bottom: 2.5rem; text-align: center;">The Collection</h2>
+        <div class="stats-row">
+          <div class="stat-box">
+            <div class="stat-val">32</div>
+            <div class="stat-lbl">Templates</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val">4</div>
+            <div class="stat-lbl">CSS Themes</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val">1</div>
+            <div class="stat-lbl">HTML File</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val">0</div>
+            <div class="stat-lbl">Dependencies</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: TWO WORKFLOWS -->
+    <section class="slide bg-grid scanlines grain crt-glow">
+      <div class="starfield" id="starfield4"></div>
+      <div class="slide-content" style="z-index:10;">
         <span class="pixel-label">Core Systems</span>
-        <h2 style="color: var(--neon-cyan); margin-bottom: 2.5rem; text-align: center;">Two Workflows, One Goal</h2>
+        <h2 style="color: var(--neon-cyan); margin-bottom: 2.5rem; text-align: center;">Two Workflows</h2>
         <div class="workflow-grid">
           <div class="workflow-card dark-card pixel-corners">
             <h3 style="color: var(--neon-cyan);">Workflow A</h3>
             <div class="sub">Beautiful Templates</div>
             <p>32 professionally-designed HTML templates. Best for polished, visually distinctive presentations.</p>
             <ul>
-              <li>Editorial, retro, brutalist, corporate styles</li>
+              <li>Editorial, retro, brutalist, corporate</li>
               <li>Animated transitions & reveals</li>
               <li>Template preview before building</li>
               <li>Custom fonts & color palettes</li>
@@ -748,11 +277,11 @@
       </div>
     </section>
 
-    <!-- ========== SLIDE 4: WORKFLOW A — TEMPLATES ========== -->
-    <section class="slide bg-grid-cyan scanlines grain" data-slide="4">
+    <!-- SLIDE 5: WORKFLOW A TEMPLATES -->
+    <section class="slide bg-grid-cyan scanlines grain">
       <div class="slide-content">
         <span class="pixel-label cyan-label">Workflow A</span>
-        <h2 style="color: var(--deep-navy); margin-bottom: 2rem; text-align: center;">32 Beautiful Templates</h2>
+        <h2 style="color: var(--deep-navy); margin-bottom: 1.5rem; text-align: center;">32 Beautiful Templates</h2>
         <p style="color: rgba(15,27,61,0.7); text-align: center; margin-bottom: 2rem; font-size: 0.95rem; max-width: 600px;">
           Pick based on occasion and mood. The skill shows you 3 candidates with live title-slide previews, then builds the full deck.
         </p>
@@ -765,15 +294,19 @@
           <div class="template-thumb thumb-blue-pro"><span>Blue Pro<br>Corporate Clean</span></div>
           <div class="template-thumb thumb-blockframe"><span>BlockFrame<br>Neo-Brutalist</span></div>
           <div class="template-thumb thumb-playful"><span>Playful<br>Sun-Warm Indie</span></div>
+          <div class="template-thumb thumb-8bit"><span>8-Bit Orbit<br>Retro Neon</span></div>
+          <div class="template-thumb thumb-grove"><span>Grove<br>Forest Green</span></div>
+          <div class="template-thumb thumb-daisy"><span>Daisy Days<br>Pastel Hand-Drawn</span></div>
+          <div class="template-thumb thumb-coral"><span>Coral<br>Cream+Coral</span></div>
         </div>
       </div>
     </section>
 
-    <!-- ========== SLIDE 5: WORKFLOW B — THEMES ========== -->
-    <section class="slide bg-grid-lavender scanlines grain" data-slide="5">
+    <!-- SLIDE 6: WORKFLOW B THEMES -->
+    <section class="slide bg-grid-lavender scanlines grain">
       <div class="slide-content">
         <span class="pixel-label dark-label">Workflow B</span>
-        <h2 style="color: var(--deep-navy); margin-bottom: 2rem; text-align: center;">4 Built-in CSS Themes</h2>
+        <h2 style="color: var(--deep-navy); margin-bottom: 1.5rem; text-align: center;">4 Built-in CSS Themes</h2>
         <p style="color: rgba(15,27,61,0.7); text-align: center; margin-bottom: 2rem; font-size: 0.95rem; max-width: 600px;">
           Self-contained single-file output. No template selection needed — just pick a theme and go.
         </p>
@@ -798,9 +331,29 @@
       </div>
     </section>
 
-    <!-- ========== SLIDE 6: HOW IT WORKS ========== -->
-    <section class="slide bg-grid scanlines grain crt-glow" data-slide="6">
-      <div class="starfield" id="starfield6"></div>
+    <!-- SLIDE 7: COMPARE -->
+    <section class="slide bg-grid-pink scanlines grain">
+      <div class="slide-content">
+        <span class="pixel-label dark-label">Decision Guide</span>
+        <h2 style="color: var(--deep-navy); margin-bottom: 2rem; text-align: center;">Which Workflow?</h2>
+        <div class="compare-grid">
+          <div class="compare-card left-card">
+            <h4>Use Workflow A when...</h4>
+            <p>You want a visually distinctive deck. You have time to compare 3 templates. You need animated transitions, custom fonts, and a specific mood.</p>
+            <div class="verdict">→ Go with Workflow A for pitches, keynotes, client presentations</div>
+          </div>
+          <div class="compare-card right-card">
+            <h4>Use Workflow B when...</h4>
+            <p>You need a quick deck. You know which theme you want. You want a single self-contained HTML file with zero external dependencies.</p>
+            <div class="verdict">→ Go with Workflow B for stand-ups, tech talks, internal reports</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 8: HOW IT WORKS -->
+    <section class="slide bg-grid scanlines grain crt-glow">
+      <div class="starfield" id="starfield8"></div>
       <div class="slide-content" style="z-index:10;">
         <span class="pixel-label">Workflow A Process</span>
         <h2 style="color: var(--neon-cyan); margin-bottom: 2.5rem; text-align: center;">How It Works</h2>
@@ -837,11 +390,12 @@
       </div>
     </section>
 
-    <!-- ========== SLIDE 7: FEATURES ========== -->
-    <section class="slide bg-grid-pink scanlines grain" data-slide="7">
-      <div class="slide-content">
-        <span class="pixel-label dark-label">Capabilities</span>
-        <h2 style="color: var(--deep-navy); margin-bottom: 2rem; text-align: center;">Built-in Features</h2>
+    <!-- SLIDE 9: FEATURES -->
+    <section class="slide bg-grid-dark scanlines grain crt-glow">
+      <div class="starfield" id="starfield9"></div>
+      <div class="slide-content" style="z-index:10;">
+        <span class="pixel-label">Capabilities</span>
+        <h2 style="color: var(--neon-cyan); margin-bottom: 2rem; text-align: center;">Built-in Features</h2>
         <ul class="feature-list" style="color: white;">
           <li>Keyboard navigation (arrow keys)</li>
           <li>Click & touch / swipe support</li>
@@ -853,15 +407,40 @@
           <li>No external JS dependencies</li>
           <li>Custom fonts per template</li>
           <li>Custom color palettes</li>
+          <li>Bar charts & stat layouts</li>
+          <li>Split layouts & quote slides</li>
         </ul>
       </div>
     </section>
 
-    <!-- ========== SLIDE 8: TRY IT ========== -->
-    <section class="slide bg-grid-cyan scanlines grain" data-slide="8">
+    <!-- SLIDE 10: OUTPUT DIR -->
+    <section class="slide bg-grid-cyan scanlines grain">
       <div class="slide-content">
-        <span class="pixel-label cyan-label">Get Started</span>
-        <h2 style="color: var(--deep-navy); margin-bottom: 2rem; text-align: center;">Try It Now</h2>
+        <span class="pixel-label cyan-label">Output</span>
+        <h2 style="color: var(--deep-navy); margin-bottom: 1.5rem; text-align: center;">Where Are Files Saved?</h2>
+        <div style="max-width: 600px; width: 100%;">
+          <div style="background: var(--deep-navy); padding: 20px 24px; margin-bottom: 16px;">
+            <div style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--neon-yellow); letter-spacing: 0.1em; margin-bottom: 8px;">DEFAULT OUTPUT</div>
+            <code style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--neon-cyan);">~/slides/&lt;deck-name&gt;/index.html</code>
+          </div>
+          <div style="background: var(--deep-navy); padding: 20px 24px; margin-bottom: 16px;">
+            <div style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--neon-yellow); letter-spacing: 0.1em; margin-bottom: 8px;">PREVIEW FILES (Workflow A)</div>
+            <code style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--neon-cyan);">~/slides/&lt;deck-name&gt;/previews/</code>
+          </div>
+          <div style="background: var(--deep-navy); padding: 20px 24px;">
+            <div style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--neon-yellow); letter-spacing: 0.1em; margin-bottom: 8px;">CUSTOM PATH</div>
+            <p style="color: rgba(255,255,255,0.6); font-size: 0.85rem; line-height: 1.5;">You can specify any output directory: "save it to ~/my-decks" or "output to /tmp/slides"</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 11: TRY IT -->
+    <section class="slide bg-grid scanlines grain crt-glow">
+      <div class="starfield" id="starfield11"></div>
+      <div class="slide-content" style="z-index:10;">
+        <span class="pixel-label">Get Started</span>
+        <h2 style="color: var(--neon-cyan); margin-bottom: 2rem; text-align: center;">Try It Now</h2>
         <div style="max-width: 640px; width: 100%;">
           <div style="background: var(--deep-navy); padding: 24px 28px; margin-bottom: 16px;">
             <div style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--neon-yellow); letter-spacing: 0.1em; margin-bottom: 8px;">WORKFLOW A — TEMPLATES</div>
@@ -879,8 +458,8 @@
       </div>
     </section>
 
-    <!-- ========== SLIDE 9: INSTALL ========== -->
-    <section class="slide bg-grid-yellow scanlines grain" data-slide="9">
+    <!-- SLIDE 12: INSTALL -->
+    <section class="slide bg-grid-yellow scanlines grain">
       <div class="slide-content">
         <span class="pixel-label dark-label">Install</span>
         <h2 style="color: var(--deep-navy); margin-bottom: 2rem; text-align: center;">One Command Setup</h2>
@@ -894,18 +473,36 @@
       </div>
     </section>
 
-    <!-- ========== SLIDE 10: CLOSING CTA ========== -->
-    <section class="slide bg-grid scanlines grain crt-glow" data-slide="10">
-      <div class="starfield" id="starfield10"></div>
-      <div class="pixel-particles" id="particles10"></div>
-      <div class="pixel-landscape" id="landscape10"></div>
+    <!-- SLIDE 13: EXAMPLE DECKS -->
+    <section class="slide bg-grid-lavender scanlines grain">
+      <div class="slide-content">
+        <span class="pixel-label dark-label">Inspiration</span>
+        <h2 style="color: var(--deep-navy); margin-bottom: 2rem; text-align: center;">What Can You Build?</h2>
+        <div class="template-gallery">
+          <div class="template-thumb thumb-studio" style="font-size:0.55rem;"><span>Studio · Product Launch</span></div>
+          <div class="template-thumb thumb-blue-pro" style="font-size:0.55rem;"><span>Blue Pro · Quarterly Review</span></div>
+          <div class="template-thumb thumb-cobalt" style="font-size:0.55rem;"><span>Cobalt Grid · Tech Talk</span></div>
+          <div class="template-thumb thumb-blockframe" style="font-size:0.55rem;"><span>BlockFrame · Hackathon</span></div>
+          <div class="template-thumb thumb-playful" style="font-size:0.55rem;"><span>Playful · Indie Launch</span></div>
+          <div class="template-thumb thumb-signal" style="font-size:0.55rem;"><span>Signal · Research Talk</span></div>
+          <div class="template-thumb thumb-capsule" style="font-size:0.55rem;"><span>Capsule · Startup Deck</span></div>
+          <div class="template-thumb thumb-8bit" style="font-size:0.55rem;"><span>8-Bit Orbit · Retro Game Pitch</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 14: CTA -->
+    <section class="slide bg-grid scanlines grain crt-glow">
+      <div class="starfield" id="starfield14"></div>
+      <div class="pixel-particles" id="particles14"></div>
+      <div class="pixel-landscape" id="landscape14"></div>
       <div class="slide-content" style="z-index:10;">
         <div class="cta-content">
           <h2>LEVEL UP<br>YOUR DECK</h2>
           <p>Stop wrestling with slide software. Start creating presentations that actually look like you gave a damn.</p>
           <div class="cta-buttons">
             <button class="pixel-btn" onclick="window.open('https://github.com/yugasun/slides-skills','_blank')">View on GitHub</button>
-            <button class="pixel-btn pink-btn" onclick="window.open('https://yugasun.github.io/slides-skills/','_blank')">Open This Demo</button>
+            <button class="pixel-btn pink-btn" onclick="window.open('https://yugasun.github.io/slides-skills/','_blank')">Open Demo</button>
           </div>
         </div>
       </div>
@@ -916,7 +513,7 @@
 
 <script>
 (function() {
-  const totalSlides = 10;
+  const totalSlides = 14;
   let currentSlide = 0;
   const container = document.getElementById('slidesContainer');
   const counter = document.getElementById('slideCounter');
@@ -928,7 +525,6 @@
     dot.addEventListener('click', () => goToSlide(i));
     dotsContainer.appendChild(dot);
   }
-
   const dots = document.querySelectorAll('.nav-dot');
 
   function updateUI() {
@@ -942,34 +538,22 @@
     currentSlide = index;
     updateUI();
   }
-
   function nextSlide() { goToSlide(currentSlide + 1); }
   function prevSlide() { goToSlide(currentSlide - 1); }
 
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') {
-      e.preventDefault();
-      nextSlide();
-    } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
-      e.preventDefault();
-      prevSlide();
-    } else if (e.key === 'Home') {
-      e.preventDefault();
-      goToSlide(0);
-    } else if (e.key === 'End') {
-      e.preventDefault();
-      goToSlide(totalSlides - 1);
-    }
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+    else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+    else if (e.key === 'Home') { e.preventDefault(); goToSlide(0); }
+    else if (e.key === 'End') { e.preventDefault(); goToSlide(totalSlides - 1); }
   });
 
   let touchStartY = 0;
-  document.addEventListener('touchstart', (e) => { touchStartY = e.touches[0].clientY; });
+  document.addEventListener('touchstart', (e) => { touchStartY = e.touches[0].clientY; }, { passive: true });
   document.addEventListener('touchend', (e) => {
     const diff = touchStartY - e.changedTouches[0].clientY;
-    if (Math.abs(diff) > 50) {
-      diff > 0 ? nextSlide() : prevSlide();
-    }
-  });
+    if (Math.abs(diff) > 50) { diff > 0 ? nextSlide() : prevSlide(); }
+  }, { passive: true });
 
   let wheelLock = false;
   document.addEventListener('wheel', (e) => {
@@ -980,23 +564,23 @@
   }, { passive: true });
 
   function generateStars(containerId, count) {
-    const container = document.getElementById(containerId);
-    if (!container) return;
-    container.innerHTML = '';
+    const c = document.getElementById(containerId);
+    if (!c) return;
+    c.innerHTML = '';
     for (let i = 0; i < (count || 40); i++) {
-      const star = document.createElement('div');
-      star.className = 'star';
-      star.style.left = Math.random() * 100 + '%';
-      star.style.top = Math.random() * 100 + '%';
-      star.style.animationDelay = Math.random() * 3 + 's';
-      container.appendChild(star);
+      const s = document.createElement('div');
+      s.className = 'star';
+      s.style.left = Math.random() * 100 + '%';
+      s.style.top = Math.random() * 100 + '%';
+      s.style.animationDelay = Math.random() * 3 + 's';
+      c.appendChild(s);
     }
   }
 
   function generateParticles(containerId, colors, count) {
-    const container = document.getElementById(containerId);
-    if (!container) return;
-    container.innerHTML = '';
+    const c = document.getElementById(containerId);
+    if (!c) return;
+    c.innerHTML = '';
     for (let i = 0; i < (count || 12); i++) {
       const p = document.createElement('div');
       p.className = 'p';
@@ -1005,34 +589,36 @@
       p.style.top = Math.random() * 100 + '%';
       p.style.animationDelay = Math.random() * 5 + 's';
       p.style.animationDuration = (6 + Math.random() * 6) + 's';
-      container.appendChild(p);
+      c.appendChild(p);
     }
   }
 
   function generateLandscape() {
-    const container = document.getElementById('landscape10');
-    if (!container) return;
+    const c = document.getElementById('landscape14');
+    if (!c) return;
     const heights = [30, 50, 70, 40, 60, 35, 55, 45, 80, 25, 50, 40];
     heights.forEach((h, i) => {
-      const mtn = document.createElement('div');
-      mtn.className = 'mountain';
-      mtn.style.height = h + 'px';
-      mtn.style.width = (60 + (i % 3) * 20) + 'px';
-      container.appendChild(mtn);
+      const m = document.createElement('div');
+      m.className = 'mountain';
+      m.style.height = h + 'px';
+      m.style.width = (60 + (i % 3) * 20) + 'px';
+      c.appendChild(m);
     });
   }
 
   generateStars('starfield1', 50);
   generateStars('starfield3', 30);
-  generateStars('starfield6', 35);
-  generateStars('starfield10', 45);
+  generateStars('starfield4', 25);
+  generateStars('starfield8', 35);
+  generateStars('starfield9', 40);
+  generateStars('starfield11', 30);
+  generateStars('starfield14', 45);
   generateParticles('particles1', ['var(--neon-cyan)', 'var(--neon-pink)', 'var(--neon-yellow)'], 16);
-  generateParticles('particles10', ['var(--neon-cyan)', 'var(--neon-pink)', 'var(--neon-yellow)'], 20);
+  generateParticles('particles14', ['var(--neon-cyan)', 'var(--neon-pink)', 'var(--neon-yellow)'], 20);
   generateLandscape();
 
   updateUI();
 })();
 </script>
-
 </body>
 </html>

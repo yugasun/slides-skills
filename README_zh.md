@@ -6,7 +6,9 @@
 
 ## 在线演示
 
-👉 **[打开演示](https://yugasun.github.io/slides-skills/)** — 10 页幻灯片，展示 8-bit-orbit 模板（霓虹像素风格），演示技能的各项能力。使用方向键或滑动导航。
+👉 **[主演示](https://yugasun.github.io/slides-skills/)** — 14 页幻灯片，展示 8-bit-orbit 模板（霓虹像素风格），讲解技能全部能力。使用方向键或滑动导航。
+
+👉 **[Creative Mode 演示](https://yugasun.github.io/slides-skills/creative.html)** — 14 页 Creative Mode 模板风格幻灯片，展示 Workflow A 模板的丰富布局可能性。
 
 ## 安装
 
@@ -14,7 +16,7 @@
 
 直接告诉 Claude Code/Codex 你想做什么：
 
-```
+```plaintext
 帮我安装 slides skill https://github.com/yugasun/slides-skills
 ```
 
@@ -35,7 +37,7 @@ npx skills add yugasun/slides-skills
 
 安装后，直接描述你的需求：
 
-```
+```plaintext
 /创建一个产品发布会演示文稿
 /制作一个关于 AI 趋势的技术演讲
 /用赛博朋克主题生成团队评审
@@ -55,8 +57,8 @@ npx skills add yugasun/slides-skills
 
 适用于快速、自包含的输出，无需模板：
 
-| 主题 | 风格 |
-|------|------|
+| 主题   | 风格     |
+|--------|----------|
 | **赛博朋克** | 深色、霓虹、未来主义 |
 | **企业** | 浅色、专业、蓝灰色 |
 | **极简** | 黑白色、瑞士风格 |
@@ -64,7 +66,7 @@ npx skills add yugasun/slides-skills
 
 ## 仓库布局
 
-```
+```plaintext
 slides-skills/
 ├── demo/                          # 在线演示（Studio 模板）
 ├── skills/slides/                # 技能源
@@ -74,7 +76,6 @@ slides-skills/
 │   └── themes/                   # CSS 主题
 ├── README.md
 └── README_zh.md
-```
 ```
 
 ## 参考
