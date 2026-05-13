@@ -186,10 +186,10 @@
     .s10 { background: var(--cream); }
     .s10 .kicker { position: absolute; left: 80px; top: 100px; font-family: "JetBrains Mono", monospace; font-size: 20px; letter-spacing: .14em; text-transform: uppercase; background: var(--cyan, #5edcf4); color: var(--ink); padding: 8px 16px; }
     .s10 .heading { position: absolute; left: 80px; top: 200px; font-size: clamp(2rem, 4vw, 4rem); color: var(--ink); }
-    .s10 .code-block { position: absolute; left: 80px; top: 320px; background: var(--ink); padding: 20px 24px; max-width: 500px; width: 100%; }
+    .s10 .code-block { position: absolute; left: 80px; top: 320px; background: var(--ink); padding: 20px 24px; max-width: 500px; width: 100%; border: 4px solid var(--ink); }
     .s10 .code-block .code-label { font-family: "JetBrains Mono", monospace; font-size: 12px; letter-spacing: .1em; color: var(--yellow); margin-bottom: 8px; text-transform: uppercase; }
     .s10 .code-block code { font-family: "JetBrains Mono", monospace; font-size: 16px; color: var(--cyan, #5edcf4); letter-spacing: .03em; }
-    .s10 .desc { position: absolute; left: 80px; top: 440px; font-size: 17px; line-height: 1.5; color: var(--ink-2); max-width: 500px; }
+    .s10 .desc { position: absolute; left: 80px; top: 520px; font-size: 17px; line-height: 1.5; color: var(--ink-2); max-width: 600px; }
 
     /* ===== SLIDE 11: TRY IT ===== */
     .s11 { background: var(--cream); }
@@ -210,6 +210,10 @@
     .s12 .code-block { position: absolute; left: 80px; top: 320px; background: var(--ink); padding: 24px 32px; max-width: 540px; width: 100%; border: 4px solid var(--ink); }
     .s12 .code-block code { font-family: "JetBrains Mono", monospace; font-size: 18px; color: var(--yellow); letter-spacing: .03em; }
     .s12 .note { position: absolute; left: 80px; top: 440px; font-size: 17px; color: var(--ink-2); max-width: 500px; line-height: 1.5; }
+    .s12 .or-divider { position: absolute; left: 80px; top: 500px; display: flex; align-items: center; gap: 16px; font-family: "JetBrains Mono", monospace; font-size: 14px; color: var(--ink-2); white-space: nowrap; }
+    .s12 .or-divider::before, .s12 .or-divider::after { content: ""; flex: 1; height: 2px; background: var(--ink-2); opacity: 0.3; }
+    .s12 .code-block.secondary { position: absolute; left: 80px; top: 540px; background: rgba(15,15,15,0.1); padding: 16px 24px; max-width: 540px; width: 100%; border: 3px solid var(--ink); }
+    .s12 .code-block.secondary code { font-size: 15px; color: var(--ink); }
 
     /* ===== SLIDE 13: WHAT CAN YOU BUILD ===== */
     .s13 { background: var(--cream-2); }
@@ -559,7 +563,7 @@
         <div class="code-label">Default Output</div>
         <code>~/slides/&lt;deck-name&gt;/index.html</code>
       </div>
-      <div class="code-block" style="top: 420px;">
+      <div class="code-block" style="top: 400px;">
         <div class="code-label">Preview Files (Workflow A)</div>
         <code>~/slides/&lt;deck-name&gt;/previews/</code>
       </div>
@@ -606,6 +610,12 @@
         <code>npx skills add yugasun/slides-skills</code>
       </div>
       <p class="note">Requires Claude Code. After install, just start a conversation and describe what you want to present.</p>
+      <div class="or-divider">
+        <span>Or just tell Claude Code what you want</span>
+      </div>
+      <div class="code-block secondary">
+        <code>Install the slides skill https://github.com/yugasun/slides-skills</code>
+      </div>
       <div class="slide-meta">
         <div>Install</div>
         <div>12<span class="dot"></span>14</div>
